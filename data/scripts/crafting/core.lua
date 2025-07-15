@@ -51,6 +51,7 @@ end
 function Crafting.getSuccessChance(player, skill)
     local chance = 50 + skill * 5 + math.floor(player:getLevel() / 10)
     local mastery = player.getCustomAttribute and player:getCustomAttribute(27) or 0
+
     if mastery > 0 then
         chance = chance + mastery
     end

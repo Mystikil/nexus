@@ -1,13 +1,16 @@
-local talkAction = TalkAction("!skills")
-
-function talkAction.onSay(player, words, param)
+function onSay(player, words, param)
 	local message = ""
+	if not CustomSkills or not CustomSkills.skills then
+		player:sendCancelMessage("No custom skills are available.")
+		return false
+	end
+
 	for id, info in pairs(CustomSkills.skills) do
 		local level = player:getCustomSkill(id)
 		message = message .. info.name .. ": " .. level .. "\n"
 	end
 
-	local window = ModalWindow{
+	local window = ModalWindow {
 		title = "Custom Skills",
 		message = message
 	}
@@ -18,6 +21,3 @@ function talkAction.onSay(player, words, param)
 
 	return false
 end
-
-talkAction:separator(" ")
-talkAction:register()
