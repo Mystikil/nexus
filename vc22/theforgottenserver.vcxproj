@@ -249,6 +249,7 @@
     <ClCompile Include="..\src\gatemanager.cpp" />
     <ClCompile Include="..\src\instance.cpp" />
     <ClCompile Include="..\src\dungeon_generator.cpp" />
+    <ClCompile Include="..\src\error.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\actions.h" />
@@ -339,6 +340,7 @@
     <ClInclude Include="..\src\gatemanager.h" />
     <ClInclude Include="..\src\instance.h" />
     <ClInclude Include="..\src\dungeon_generator.h" />
+    <ClInclude Include="..\src\error.h" />
     <ClInclude Include="..\src\xtea.h" />
   </ItemGroup>
   <ItemGroup>
