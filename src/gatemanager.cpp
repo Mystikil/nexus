@@ -13,6 +13,7 @@
 #include "luascript.h"
 #include "monster.h"
 #include "events.h"
+#include "tools.h"
 
 extern Game g_game;
 extern LuaEnvironment g_luaEnvironment;
@@ -116,7 +117,56 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
 	std::cout << "[GateManager] Spawned gate " << id << " at (" << pos.getX() << ','
 		<< pos.getY() << ',' << static_cast<int>(pos.getZ()) << ")" << std::endl;
 
-	return &gate;
+        return &gate;
+}
+
+void GateManager::loadSpawnConfig(const std::string& file)
+{
+        lua_State* L = luaL_newstate();
+        if (!L) {
+                return;
+        }
+
+        luaL_openlibs(L);
+
+        if (luaL_dofile(L, file.c_str()) != 0) {
+                std::cout << "[Error - GateManager::loadSpawnConfig] " << lua_tostring(L, -1) << std::endl;
+                lua_close(L);
+                return;
+        }
+
+        lua_getglobal(L, "GateSpawnConfig");
+        if (!lua_istable(L, -1)) {
+                lua_close(L);
+                return;
+        }
+
+        lua_getfield(L, -1, "center");
+        if (lua_istable(L, -1)) {
+                spawnCenter = lua::getPosition(L, lua_gettop(L));
+        }
+        lua_pop(L, 1);
+
+        spawnRadius = lua::getField<uint32_t>(L, -1, "radius", 25);
+        spawnIntervalMs = lua::getField<uint32_t>(L, -1, "interval", 60000);
+
+        spawnRules.clear();
+        lua_getfield(L, -1, "rules");
+        if (lua_istable(L, -1)) {
+                lua_pushnil(L);
+                while (lua_next(L, -2) != 0) {
+                        const auto tableIndex = lua_gettop(L);
+                        SpawnRule rule;
+                        rule.rank = static_cast<GateRank>(lua::getField<int>(L, tableIndex, "rank"));
+                        rule.type = static_cast<GateType>(lua::getField<int>(L, tableIndex, "type", static_cast<int>(GateType::NORMAL)));
+                        rule.maxCount = lua::getField<uint32_t>(L, tableIndex, "max", 0);
+                        spawnRules.push_back(rule);
+                        lua_pop(L, 1); // pop value, keep key
+                }
+        }
+        lua_pop(L, 2); // rules table and GateSpawnConfig
+
+        lua_close(L);
 }
 
 
@@ -190,6 +240,45 @@ void GateManager::update()
                         }
                         g_game.map.removeTile(it->second.getPosition());
                         gates.erase(it);
+                }
+        }
+
+        // handle automatic gate spawning
+        if (!spawnRules.empty() && now >= lastSpawn + static_cast<int64_t>(spawnIntervalMs)) {
+                lastSpawn = now;
+
+                for (const SpawnRule& rule : spawnRules) {
+                        uint32_t count = 0;
+                        for (const auto& [gid, gate] : gates) {
+                                if (gate.getRank() == rule.rank && gate.getType() == rule.type) {
+                                        ++count;
+                                }
+                        }
+
+                        while (count < rule.maxCount) {
+                                Position pos;
+                                bool found = false;
+                                for (int i = 0; i < 50 && !found; ++i) {
+                                        int32_t dx = uniform_random(-static_cast<int32_t>(spawnRadius), static_cast<int32_t>(spawnRadius));
+                                        int32_t dy = uniform_random(-static_cast<int32_t>(spawnRadius), static_cast<int32_t>(spawnRadius));
+                                        Position candidate(spawnCenter.x + dx, spawnCenter.y + dy, spawnCenter.z);
+                                        Tile* tile = g_game.map.getTile(candidate);
+                                        if (tile && tile->getGround() && !tile->hasFlag(TILESTATE_BLOCKSOLID | TILESTATE_IMMOVABLEBLOCKSOLID | TILESTATE_BLOCKPATH | TILESTATE_IMMOVABLEBLOCKPATH)) {
+                                                pos = candidate;
+                                                found = true;
+                                        }
+                                }
+
+                                if (!found) {
+                                        break;
+                                }
+
+                                if (spawnGate(pos, rule.rank, rule.type)) {
+                                        ++count;
+                                } else {
+                                        break;
+                                }
+                        }
                 }
         }
 }
