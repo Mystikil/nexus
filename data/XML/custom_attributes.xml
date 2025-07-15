@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attributes>
+    <attribute id="1" name="Armor Penetration" group="combat" description="Ignores a portion of target's armor" />
+    <attribute id="2" name="Block Chance" group="combat" description="Flat chance to negate incoming damage" />
+    <attribute id="3" name="Parry Chance" group="combat" description="Reduces damage from melee hits" />
+    <attribute id="4" name="Dodge Chance" group="combat" description="Chance to completely avoid an attack" />
+    <attribute id="5" name="Reflect Damage" group="combat" description="Returns percentage of damage to attacker" />
+    <attribute id="6" name="True Damage" group="combat" description="Ignores all resistances and defenses" />
+    <attribute id="7" name="Bleed Chance" group="combat" description="Causes target to take damage over time" />
+    <attribute id="8" name="Execution Chance" group="combat" description="Bonus damage versus low HP targets" />
+    <attribute id="9" name="Knockback Strength" group="combat" description="Pushes enemies back on hit" />
+    <attribute id="10" name="Stun Chance" group="combat" description="Temporarily prevents enemy movement and actions" />
+
+    <attribute id="11" name="Spell Power" group="magic" description="Increases magic damage and healing" />
+    <attribute id="12" name="Mana Efficiency" group="magic" description="Reduces mana cost of spells" />
+    <attribute id="13" name="Silence Resistance" group="magic" description="Reduces chance of being silenced" />
+    <attribute id="14" name="Holy Vulnerability" group="magic" description="Increases damage taken from holy sources" />
+    <attribute id="15" name="Elemental Surge Chance" group="magic" description="Small chance for extra elemental hit" />
+    <attribute id="16" name="Curse Resistance" group="magic" description="Reduces the effect or duration of curses" />
+    <attribute id="17" name="Chaos Affinity" group="magic" description="Boosts mixed-damage spells" />
+
+    <attribute id="18" name="Weight Reduction" group="utility" description="Carry more before becoming slow" />
+    <attribute id="19" name="XP Gain Bonus" group="utility" description="Increases experience earned from kills" />
+    <attribute id="20" name="Loot Drop Bonus" group="utility" description="Increases drop chance of rare items" />
+    <attribute id="21" name="Trap Resistance" group="utility" description="Less damage or avoidance from traps" />
+    <attribute id="22" name="Aggro Modifier" group="utility" description="Attracts or repels enemy targeting" />
+    <attribute id="23" name="Jump Distance" group="utility" description="Enables short dashes or blinks" />
+    <attribute id="24" name="Auto Heal Chance" group="utility" description="Chance to trigger small heal on damage" />
+    <attribute id="25" name="Status Duration Reduction" group="utility" description="Shortens poison, burn and freeze durations" />
+    <attribute id="26" name="Pet Damage Bonus" group="utility" description="Boosts damage done by summoned creatures" />
+    <attribute id="27" name="Crafting Mastery" group="utility" description="Increases yield or success in professions" />
+    <attribute id="28" name="Night Vision" group="utility" description="Enhances visibility in dark areas" />
+    <attribute id="29" name="Burning Aura" group="utility" description="Deals small fire damage to nearby enemies" />
+    <attribute id="30" name="Resourceful" group="utility" description="Small chance to not consume runes or potions" />
+</attributes>
