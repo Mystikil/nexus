@@ -41,7 +41,7 @@ Each `Gate` object tracks the portal state and its associated instance.
 `GateManager` owns all active gates and must be updated regularly.
 
 - `spawnGate(position, rank, type)` – Creates a gate at `position` with the given rank and type. The expiration time is derived from the rank.
-- `update()` – Should be called every server tick or on a timed event. It marks gates as expired when their timer elapses and removes them from the manager. When a gate breaks before being cleared it triggers the optional `onGateBreak` Lua hook and spawns monsters configured in `GateBreakWaves`.
+- `update()` – Should be called every server tick or on a timed event. It marks gates as expired when their timer elapses and removes them from the manager. When a gate breaks before being cleared it triggers the optional `onGateBreak` Lua hook and spawns monsters configured in `GateBreakWaves`. Whenever a gate is erased the optional `onGateRemoved` hook is called after its instance has been cleaned up.
 - `getGate(id)` – Returns a pointer to the stored `Gate` or `nullptr` if the ID is unknown.
 - `removeGate(id)` – Erases a gate immediately from the manager.
 
@@ -52,7 +52,7 @@ The server now calls `GateManager::update()` every tick from the main game loop,
 1. `Game.spawnGate(position, rank[, type])` – returns the created gate id.
 2. `Game.removeGate(id)` – immediately deletes the gate.
 
-Still provide an `onGateBreak(gate)` function inside `data/scripts/gate/` if you want custom logic when a gate shatters. Use the `GateBreakWaves` table to list which monsters should spawn for each rank. The `Instance` class and dungeon logic are still experimental and need to be fleshed out.
+Still provide `onGateBreak(gate)` and/or `onGateRemoved(gate)` functions inside `data/scripts/gate/` if you want custom logic when a gate shatters or is removed. Use the `GateBreakWaves` table to list which monsters should spawn for each rank. The `Instance` class and dungeon logic are still experimental and need to be fleshed out.
 
 ### Lua Hook Example
 
@@ -67,7 +67,11 @@ GateBreakWaves = {
 function onGateBreak(gate)
     print("Gate broke at", gate.position.x, gate.position.y, gate.position.z)
 end
+
+function onGateRemoved(gate)
+    print("Gate removed", gate.id)
+end
 ```
 
-`GateBreakWaves` defines the monsters spawned when a gate of the given rank collapses. The `onGateBreak` function is optional and can be extended to implement additional behavior.
+`GateBreakWaves` defines the monsters spawned when a gate of the given rank collapses. The `onGateBreak` and `onGateRemoved` functions are optional and can be extended to implement additional behavior.
 

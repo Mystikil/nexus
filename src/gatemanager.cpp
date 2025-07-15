@@ -239,6 +239,36 @@ void GateManager::update()
                                 it->second.setInstance(nullptr);
                         }
                         g_game.map.removeTile(it->second.getPosition());
+
+                        lua_State* L = g_luaEnvironment.getLuaState();
+                        lua_getglobal(L, "onGateRemoved");
+                        if (lua_isfunction(L, -1)) {
+                                if (lua::reserveScriptEnv()) {
+                                        ScriptEnvironment* env = lua::getScriptEnv();
+                                        env->setScriptId(-1, &g_luaEnvironment);
+
+                                        lua_newtable(L);
+                                        lua_pushnumber(L, it->second.getId());
+                                        lua_setfield(L, -2, "id");
+                                        lua::pushPosition(L, it->second.getPosition());
+                                        lua_setfield(L, -2, "position");
+                                        lua_pushnumber(L, static_cast<int>(it->second.getRank()));
+                                        lua_setfield(L, -2, "rank");
+                                        lua_pushnumber(L, static_cast<int>(it->second.getType()));
+                                        lua_setfield(L, -2, "type");
+
+                                        if (lua_pcall(L, 1, 0, 0) != 0) {
+                                                std::cout << "[Warning - GateManager::update] onGateRemoved: " << lua_tostring(L, -1) << std::endl;
+                                                lua_pop(L, 1);
+                                        }
+                                        lua::resetScriptEnv();
+                                } else {
+                                        lua_pop(L, 1);
+                                }
+                        } else {
+                                lua_pop(L, 1);
+                        }
+
                         gates.erase(it);
                 }
         }
@@ -293,6 +323,36 @@ void GateManager::removeGate(uint32_t gateId)
                         delete inst;
                 }
                 g_game.map.removeTile(it->second.getPosition());
+
+                lua_State* L = g_luaEnvironment.getLuaState();
+                lua_getglobal(L, "onGateRemoved");
+                if (lua_isfunction(L, -1)) {
+                        if (lua::reserveScriptEnv()) {
+                                ScriptEnvironment* env = lua::getScriptEnv();
+                                env->setScriptId(-1, &g_luaEnvironment);
+
+                                lua_newtable(L);
+                                lua_pushnumber(L, it->second.getId());
+                                lua_setfield(L, -2, "id");
+                                lua::pushPosition(L, it->second.getPosition());
+                                lua_setfield(L, -2, "position");
+                                lua_pushnumber(L, static_cast<int>(it->second.getRank()));
+                                lua_setfield(L, -2, "rank");
+                                lua_pushnumber(L, static_cast<int>(it->second.getType()));
+                                lua_setfield(L, -2, "type");
+
+                                if (lua_pcall(L, 1, 0, 0) != 0) {
+                                        std::cout << "[Warning - GateManager::removeGate] onGateRemoved: " << lua_tostring(L, -1) << std::endl;
+                                        lua_pop(L, 1);
+                                }
+                                lua::resetScriptEnv();
+                        } else {
+                                lua_pop(L, 1);
+                        }
+                } else {
+                        lua_pop(L, 1);
+                }
+
                 gates.erase(it);
         }
 }
