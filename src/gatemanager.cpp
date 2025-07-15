@@ -7,6 +7,63 @@
 
 #include <iostream>
 
+#include "game.h"
+#include "luascript.h"
+#include "monster.h"
+#include "events.h"
+
+extern Game g_game;
+extern LuaEnvironment g_luaEnvironment;
+
+namespace {
+       const char* RANK_NAMES[] = {"E", "D", "C", "B", "A", "S"};
+
+       void spawnBreakWave(const Gate& gate)
+       {
+               lua_State* L = g_luaEnvironment.getLuaState();
+               lua_getglobal(L, "GateBreakWaves");
+               if (!lua_istable(L, -1)) {
+                       lua_pop(L, 1);
+                       return;
+               }
+
+               lua_getfield(L, -1, RANK_NAMES[static_cast<uint8_t>(gate.getRank())]);
+               if (!lua_istable(L, -1)) {
+                       lua_pop(L, 2);
+                       return;
+               }
+
+               lua_pushnil(L);
+               int offset = 0;
+               while (lua_next(L, -2) != 0) {
+                       const auto tableIndex = lua_gettop(L);
+                       std::string monsterName = lua::getFieldString(L, tableIndex, "name");
+                       int count = lua::getField<int>(L, tableIndex, "count", 1);
+                       lua_pop(L, 1); // pop value, keep key
+
+                       for (int i = 0; i < count; ++i) {
+                               Monster* monster = Monster::createMonster(monsterName);
+                               if (!monster) {
+                                       continue;
+                               }
+
+                               Position spawnPos = gate.getPosition();
+                               spawnPos.x += offset++;
+
+                               if (events::monster::onSpawn(monster, spawnPos, false, true)) {
+                                       if (!g_game.placeCreature(monster, spawnPos, false, true)) {
+                                               delete monster;
+                                       }
+                               } else {
+                                       delete monster;
+                               }
+                       }
+               }
+
+               lua_pop(L, 2); // rank table and GateBreakWaves
+       }
+}
+
 Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
 {
 	uint32_t id = generateGateId();
@@ -52,9 +109,38 @@ void GateManager::update()
 	if (!gate.isExpired() && now >= gate.getExpirationTime()) {
 		gate.setExpired(true);
 		if (!gate.isCleared()) {
-		std::cout << "[GateManager] Gate " << id << " has broken!" << std::endl;
-		// TODO: call Lua hook onGateBreak(gate)
-		// TODO: spawn break mobs at gate position
+                std::cout << "[GateManager] Gate " << id << " has broken!" << std::endl;
+
+                lua_State* L = g_luaEnvironment.getLuaState();
+                lua_getglobal(L, "onGateBreak");
+                if (lua_isfunction(L, -1)) {
+                        if (lua::reserveScriptEnv()) {
+                                ScriptEnvironment* env = lua::getScriptEnv();
+                                env->setScriptId(-1, &g_luaEnvironment);
+
+                                lua_newtable(L);
+                                lua_pushnumber(L, gate.getId());
+                                lua_setfield(L, -2, "id");
+                                lua::pushPosition(L, gate.getPosition());
+                                lua_setfield(L, -2, "position");
+                                lua_pushnumber(L, static_cast<int>(gate.getRank()));
+                                lua_setfield(L, -2, "rank");
+                                lua_pushnumber(L, static_cast<int>(gate.getType()));
+                                lua_setfield(L, -2, "type");
+
+                                if (lua_pcall(L, 1, 0, 0) != 0) {
+                                        std::cout << "[Warning - GateManager::update] onGateBreak: " << lua_tostring(L, -1) << std::endl;
+                                        lua_pop(L, 1);
+                                }
+                                lua::resetScriptEnv();
+                        } else {
+                                lua_pop(L, 1);
+                        }
+                } else {
+                        lua_pop(L, 1);
+                }
+
+                spawnBreakWave(gate);
 		} else {
 		std::cout << "[GateManager] Gate " << id << " expired." << std::endl;
 		}

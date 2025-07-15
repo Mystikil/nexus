@@ -41,7 +41,7 @@ Each `Gate` object tracks the portal state and its associated instance.
 `GateManager` owns all active gates and must be updated regularly.
 
 - `spawnGate(position, rank, type)` – Creates a gate at `position` with the given rank and type. The expiration time is derived from the rank.
-- `update()` – Should be called every server tick or on a timed event. It marks gates as expired when their timer elapses and removes them from the manager. When a gate breaks before being cleared it should eventually trigger the `onGateBreak` Lua hook (TODO) and spawn break mobs.
+- `update()` – Should be called every server tick or on a timed event. It marks gates as expired when their timer elapses and removes them from the manager. When a gate breaks before being cleared it triggers the optional `onGateBreak` Lua hook and spawns monsters configured in `GateBreakWaves`.
 - `getGate(id)` – Returns a pointer to the stored `Gate` or `nullptr` if the ID is unknown.
 - `removeGate(id)` – Erases a gate immediately from the manager.
 
@@ -51,8 +51,25 @@ Currently the system is self‑contained and does not automatically run. To inte
 
 1. Create an update event that calls `GateManager::update()` periodically.
 2. Call `GateManager::spawnGate()` from gameplay scripts or NPCs to create new gates.
-3. Implement the missing Lua hook `onGateBreak` and define mobs to spawn when a gate breaks.
+3. Provide a Lua function `onGateBreak(gate)` inside `data/scripts/gate/` if you want to execute custom logic when a gate shatters. Use the `GateBreakWaves` table to list which monsters should spawn for each rank.
 4. Flesh out the `Instance` class and dungeon logic referenced by the `Gate` objects.
 
 Once these pieces are in place the gate system can handle timed dungeon portals that expire if players fail to clear them in time.
+
+### Lua Hook Example
+
+Create a file at `data/scripts/gate/gate_break.lua`:
+
+```lua
+GateBreakWaves = {
+    E = { {name = "rat", count = 2} },
+    D = { {name = "orc", count = 3} }
+}
+
+function onGateBreak(gate)
+    print("Gate broke at", gate.position.x, gate.position.y, gate.position.z)
+end
+```
+
+`GateBreakWaves` defines the monsters spawned when a gate of the given rank collapses. The `onGateBreak` function is optional and can be extended to implement additional behavior.
 
