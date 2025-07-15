@@ -37,6 +37,18 @@ SOUTHEAST = DIRECTION_SOUTHEAST
 NORTHWEST = DIRECTION_NORTHWEST
 NORTHEAST = DIRECTION_NORTHEAST
 
+-- Basic helper used by older scripts
+if not table.contains then
+    function table.contains(t, value)
+        for _, v in pairs(t) do
+            if v == value then
+                return true
+            end
+        end
+        return false
+    end
+end
+
 do
 	local function storageProxy(player)
 		return setmetatable({}, {
