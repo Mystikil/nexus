@@ -62,3 +62,10 @@ the value is the percentage chance that attribute will be rolled.
 
 Adjust the numbers in the table to make certain bonuses more or less common.
 A value of `0` disables an attribute entirely.
+
+### Attribute Success Rates
+
+By default each attribute in `attribute_config.lua` now ranges between 2% and
+10% chance to be applied. If none of the configured rolls succeed the crafting
+handler will reroll once, guaranteeing that every crafted weapon receives at
+least one bonus attribute.
