@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reputation gain="1">
+    <threshold name="discount" value="10" />
+    <threshold name="gift" value="20" />
+    <threshold name="quest" value="30" />
+</reputation>
