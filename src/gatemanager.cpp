@@ -77,11 +77,15 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
         gate.setRank(rank);
         gate.setType(type);
 
-        Instance* instance = new Instance(id, rank);
-        gate.setInstance(instance);
-        instance->generateLayout();
-        instance->placeTiles();
-        instance->spawnMonsters();
+        Instance* instance = nullptr;
+        if (type == GateType::NORMAL || type == GateType::RED || type == GateType::DOUBLE) {
+                instance = new Instance(id, rank);
+                instance->generateLayout();
+                instance->placeTiles();
+                instance->spawnMonsters();
+                gate.setInstance(instance);
+                std::cout << "[GateManager] Instance attached to gate " << id << std::endl;
+        }
 
         Tile* gateTile = g_game.map.getTile(pos);
         if (!gateTile) {
@@ -90,7 +94,11 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
         }
 
         Teleport* tp = new Teleport(1387);
-        tp->setDestPos(instance->getEntryPoint());
+        if (instance) {
+                tp->setDestPos(instance->getEntryPoint());
+        } else {
+                tp->setDestPos(pos);
+        }
         g_game.internalAddItem(gateTile, tp, INDEX_WHEREEVER, FLAG_NOLIMIT);
 
 	int64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(
