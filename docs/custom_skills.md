@@ -41,9 +41,9 @@ Players can interact with the new skills via Lua scripts. The supplied
 `talkaction` demonstrates how to view a skill value, but experience is now earned
 by using the appropriate tool on special resource nodes.
 
-- Use '!skills' to show your current Mining levelis also
- opens a modal window listing all of your custom skills and levels.
 
+- `!mining` &ndash; shows your current Mining level.
+- `!skills` &ndash; opens a modal window listing all of your custom skills and levels.
 
 To grant experience, define mining nodes in `data/lib/mining_nodes.lua` and make
 players use a pick (item id `2553`) on those nodes. Each node entry specifies the
