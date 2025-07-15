@@ -46,6 +46,7 @@ static constexpr int32_t EVENT_LIGHTINTERVAL = 10000;
 static constexpr int32_t EVENT_WORLDTIMEINTERVAL = 2500;
 static constexpr int32_t EVENT_DECAYINTERVAL = 250;
 static constexpr int32_t EVENT_DECAY_BUCKETS = 4;
+static constexpr int32_t EVENT_GATEINTERVAL = 1000;
 
 static constexpr int32_t MOVE_CREATURE_INTERVAL = 1000;
 
@@ -434,8 +435,9 @@ class Game {
 		void checkCreatureWalk(uint32_t creatureId);
 		void updateCreatureWalk(uint32_t creatureId);
 		void checkCreatureAttack(uint32_t creatureId);
-		void checkCreatures(size_t index);
-		void updateCreaturesPath(size_t index);
+                void checkCreatures(size_t index);
+                void updateGates();
+                void updateCreaturesPath(size_t index);
 		void checkLight();
 
 		bool combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* target, bool checkDefense, bool checkArmor, bool field, bool ignoreResistances = false);

@@ -47,14 +47,12 @@ Each `Gate` object tracks the portal state and its associated instance.
 
 ### Integration Notes
 
-Currently the system is self‑contained and does not automatically run. To integrate it you will need to:
+The server now calls `GateManager::update()` every tick from the main game loop, so gates expire automatically. You can control gates from Lua using:
 
-1. Create an update event that calls `GateManager::update()` periodically.
-2. Call `GateManager::spawnGate()` from gameplay scripts or NPCs to create new gates.
-3. Provide a Lua function `onGateBreak(gate)` inside `data/scripts/gate/` if you want to execute custom logic when a gate shatters. Use the `GateBreakWaves` table to list which monsters should spawn for each rank.
-4. Flesh out the `Instance` class and dungeon logic referenced by the `Gate` objects.
+1. `Game.spawnGate(position, rank[, type])` – returns the created gate id.
+2. `Game.removeGate(id)` – immediately deletes the gate.
 
-Once these pieces are in place the gate system can handle timed dungeon portals that expire if players fail to clear them in time.
+Still provide an `onGateBreak(gate)` function inside `data/scripts/gate/` if you want custom logic when a gate shatters. Use the `GateBreakWaves` table to list which monsters should spawn for each rank. The `Instance` class and dungeon logic are still experimental and need to be fleshed out.
 
 ### Lua Hook Example
 

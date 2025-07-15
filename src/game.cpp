@@ -27,6 +27,7 @@
 #include "scheduler.h"
 #include "script.h"
 #include "server.h"
+#include "gatemanager.h"
 #include "spectators.h"
 #include "spells.h"
 #include "storeinbox.h"
@@ -80,9 +81,13 @@ void Game::start(ServiceManager* manager) {
 		updateCreaturesPath(0);
 	}));
 
-	g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL, [this]() {
-		checkDecay();
-	}));
+        g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL, [this]() {
+                checkDecay();
+        }));
+
+        g_scheduler.addEvent(createSchedulerTask(EVENT_GATEINTERVAL, [this]() {
+                updateGates();
+        }));
 
 }
 
@@ -3694,7 +3699,15 @@ void Game::checkCreatures(size_t index) {
 		}
 	}
 
-	cleanup();
+        cleanup();
+}
+
+void Game::updateGates() {
+        g_scheduler.addEvent(createSchedulerTask(EVENT_GATEINTERVAL, [this]() {
+                updateGates();
+        }));
+
+        g_gateManager.update();
 }
 
 void Game::updateCreaturesPath(size_t index) {

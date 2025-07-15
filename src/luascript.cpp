@@ -1889,9 +1889,20 @@ void LuaScriptInterface::registerFunctions() {
 	registerEnum(L, WEAPON_WAND)
 	registerEnum(L, WEAPON_AMMO)
 
-	registerEnum(L, WORLD_TYPE_NO_PVP)
-	registerEnum(L, WORLD_TYPE_PVP)
-	registerEnum(L, WORLD_TYPE_PVP_ENFORCED)
+        registerEnum(L, WORLD_TYPE_NO_PVP)
+        registerEnum(L, WORLD_TYPE_PVP)
+        registerEnum(L, WORLD_TYPE_PVP_ENFORCED)
+
+        registerEnum(L, GateRank::E)
+        registerEnum(L, GateRank::D)
+        registerEnum(L, GateRank::C)
+        registerEnum(L, GateRank::B)
+        registerEnum(L, GateRank::A)
+        registerEnum(L, GateRank::S)
+
+        registerEnum(L, GateType::NORMAL)
+        registerEnum(L, GateType::RED)
+        registerEnum(L, GateType::DOUBLE)
 
 	// Use with container:addItem, container:addItemEx and possibly other functions.
 	registerEnum(L, FLAG_NOLIMIT)
@@ -2224,7 +2235,10 @@ void LuaScriptInterface::registerFunctions() {
 	registerMethod(L, "Game", "createMonster", LuaScriptInterface::luaGameCreateMonster);
 	registerMethod(L, "Game", "createNpc", LuaScriptInterface::luaGameCreateNpc);
 	registerMethod(L, "Game", "createTile", LuaScriptInterface::luaGameCreateTile);
-	registerMethod(L, "Game", "createMonsterType", LuaScriptInterface::luaGameCreateMonsterType);
+        registerMethod(L, "Game", "createMonsterType", LuaScriptInterface::luaGameCreateMonsterType);
+
+        registerMethod(L, "Game", "spawnGate", LuaScriptInterface::luaGameSpawnGate);
+        registerMethod(L, "Game", "removeGate", LuaScriptInterface::luaGameRemoveGate);
 
 	registerMethod(L, "Game", "startEvent", LuaScriptInterface::luaGameStartEvent);
 
@@ -4816,10 +4830,32 @@ int LuaScriptInterface::luaGameSetAccountStorageValue(lua_State* L) {
 }
 
 int LuaScriptInterface::luaGameSaveAccountStorageValues(lua_State* L) {
-	// Game.saveAccountStorageValues()
-	lua_pushboolean(L, g_game.saveAccountStorageValues());
+        // Game.saveAccountStorageValues()
+        lua_pushboolean(L, g_game.saveAccountStorageValues());
 
-	return 1;
+        return 1;
+}
+
+int LuaScriptInterface::luaGameSpawnGate(lua_State* L) {
+        // Game.spawnGate(position, rank[, type])
+        Position position = lua::getPosition(L, 1);
+        GateRank rank = lua::getNumber<GateRank>(L, 2);
+        GateType type = lua::getNumber<GateType>(L, 3, GateType::NORMAL);
+
+        Gate* gate = g_gateManager.spawnGate(position, rank, type);
+        if (gate) {
+                lua_pushnumber(L, gate->getId());
+        } else {
+                lua_pushnil(L);
+        }
+        return 1;
+}
+
+int LuaScriptInterface::luaGameRemoveGate(lua_State* L) {
+        // Game.removeGate(id)
+        uint32_t id = lua::getNumber<uint32_t>(L, 1);
+        g_gateManager.removeGate(id);
+        return 0;
 }
 
 // Variant
