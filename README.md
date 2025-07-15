@@ -10,3 +10,6 @@ This repository contains a customized build of **The Forgotten Server** along wi
 - [NPC Reputation](docs/npc_reputation.md)
 
 Additional documentation will appear in the `docs/` folder as features are added.
+
+- [Gate Instance System](docs/reame.md)
+- [Gate How-To](docs/howto.md)
