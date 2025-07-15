@@ -1107,8 +1107,14 @@ static void pushLoot(lua_State* L, const std::vector<LootBlock>& lootList) {
 	}
 }
 
-#define registerEnum(L, value) {std::string enumName = #value; registerGlobalVariable(L, enumName.substr(enumName.find_last_of(':') + 1), value); }
-#define registerEnumIn(L, tableName, value) { std::string enumName = #value; registerVariable(L, tableName, enumName.substr(enumName.find_last_of(':') + 1), value); }
+#define registerEnum(L, value) { \
+    std::string enumName = #value; \
+    registerGlobalVariable(L, enumName.substr(enumName.find_last_of(':') + 1), static_cast<lua_Number>(value)); \
+}
+#define registerEnumIn(L, tableName, value) { \
+    std::string enumName = #value; \
+    registerVariable(L, tableName, enumName.substr(enumName.find_last_of(':') + 1), static_cast<lua_Number>(value)); \
+}
 
 void LuaScriptInterface::registerFunctions() {
 	using namespace lua;
