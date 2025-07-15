@@ -53,4 +53,5 @@
         <talkaction words="!gainmining" script="custom/mining_skill.lua" />
         <talkaction words="!skills" script="custom/skills_window.lua" />
         <talkaction words="!x" separator=" " script="animation_effect.lua" />
+        <talkaction words="!jump" script="custom/jump.lua" />
 </talkactions>

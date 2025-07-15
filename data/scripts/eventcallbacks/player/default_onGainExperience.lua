@@ -64,9 +64,14 @@ function default.onGainExperience(self, source, exp, rawExp, sendText)
 		end
 	end
 
-	-- Apply low level bonus
-	exp = exp * (1 + self:calculateLowLevelBonus(level) / 100)
-	return exp
+        -- Apply low level bonus
+        exp = exp * (1 + self:calculateLowLevelBonus(level) / 100)
+
+        local bonusAttr = self:getCustomAttribute(19)
+        if bonusAttr > 0 then
+                exp = math.floor(exp * (1 + bonusAttr / 100))
+        end
+        return exp
 end
 
 default:register()
