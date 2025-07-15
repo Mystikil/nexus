@@ -9,6 +9,7 @@
 #include "configmanager.h"
 #include "scheduler.h"
 #include "tools.h"
+#include "error.h"
 
 namespace {
 
@@ -92,9 +93,11 @@ void ServiceManager::stop() {
 	for (auto& servicePortIt : acceptors) {
 		try {
 			boost::asio::post(io_context, [servicePort = servicePortIt.second]() { servicePort->onStopServer(); });
-		} catch (boost::system::system_error& e) {
-			std::cout << "[ServiceManager::stop] Network Error: " << e.what() << std::endl;
-		}
+               } catch (boost::system::system_error& e) {
+                       std::string msg = std::string("[ServiceManager::stop] Network Error: ") + e.what();
+                       std::cout << msg << std::endl;
+                       ErrorLog::log(msg);
+               }
 	}
 
 	acceptors.clear();
@@ -153,15 +156,19 @@ void ServicePort::onAccept(Connection_ptr connection, const boost::system::error
 		}
 
 		accept();
-	} else if (error != boost::asio::error::operation_aborted) {
-		if (!pendingStart) {
-			close();
-			pendingStart = true;
-			g_scheduler.addEvent(createSchedulerTask(15000, [serverPort = this->serverPort, service = std::weak_ptr<ServicePort>(shared_from_this())]() {
-				openAcceptor(service, serverPort);
-			}));
-		}
-	}
+       } else if (error != boost::asio::error::operation_aborted) {
+               std::string msg = std::string("[ServicePort::onAccept] Error: ") + error.message();
+               std::cout << msg << std::endl;
+               ErrorLog::log(msg);
+
+               if (!pendingStart) {
+                       close();
+                       pendingStart = true;
+                       g_scheduler.addEvent(createSchedulerTask(15000, [serverPort = this->serverPort, service = std::weak_ptr<ServicePort>(shared_from_this())]() {
+                               openAcceptor(service, serverPort);
+                       }));
+               }
+       }
 }
 
 Protocol_ptr ServicePort::make_protocol(bool checksummed, NetworkMessage& msg, const Connection_ptr& connection) const {
@@ -200,20 +207,23 @@ void ServicePort::open(uint16_t port) {
 			if (option) {
 				boost::system::error_code err;
 				acceptor->set_option(ip::v6_only{false}, err);
-				if (err) {
-					std::cout << "[Warning - ServicePort::open] Enabling IPv4 support failed: " << err.message()
-					          << std::endl;
-				}
+                               if (err) {
+                                       std::string msg = "[Warning - ServicePort::open] Enabling IPv4 support failed: " + err.message();
+                                       std::cout << msg << std::endl;
+                                       ErrorLog::log(msg);
+                               }
 			}
 		}
 
 		acceptor->set_option(ip::tcp::no_delay{true});
 
 		accept();
-	} catch (boost::system::system_error& e) {
-		std::cout << "[ServicePort::open] Error: " << e.what() << std::endl;
+       } catch (boost::system::system_error& e) {
+               std::string msg = std::string("[ServicePort::open] Error: ") + e.what();
+               std::cout << msg << std::endl;
+               ErrorLog::log(msg);
 
-		pendingStart = true;
+               pendingStart = true;
 		g_scheduler.addEvent(createSchedulerTask(15000,[port, service = std::weak_ptr<ServicePort>(shared_from_this())]() {
 			openAcceptor(service, port);
 		}));
