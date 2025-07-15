@@ -20,6 +20,7 @@
 #include "script.h"
 #include "scriptmanager.h"
 #include "server.h"
+#include "gatemanager.h"
 
 #include <fstream>
 
@@ -34,6 +35,7 @@ Scheduler g_scheduler;
 Game g_game;
 Monsters g_monsters;
 Vocations g_vocations;
+GateManager g_gateManager;
 extern Scripts* g_scripts;
 
 std::mutex g_loaderLock;

@@ -17,4 +17,6 @@ class GateManager {
 		std::map<uint32_t, Gate> gates;
 };
 
+extern GateManager g_gateManager;
+
 #endif // FS_GATEMANAGER_H
