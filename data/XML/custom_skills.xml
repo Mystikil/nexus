@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customskills>
+    <skill id="1" name="Mining" description="Extract ore from rocks." />
+    <skill id="2" name="Woodcutting" description="Chop wood from trees." />
+    <skill id="3" name="Fishing" description="Catch fish from water." />
+    <skill id="4" name="Smithing" description="Craft weapons and armor." />
+    <skill id="5" name="Cooking" description="Prepare tasty meals." />
+    <skill id="6" name="Fletching" description="Craft bows and arrows." />
+    <skill id="7" name="Herbalism" description="Harvest herbs for potions." />
+</customskills>
