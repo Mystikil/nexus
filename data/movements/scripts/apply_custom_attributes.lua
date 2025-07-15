@@ -4,7 +4,7 @@
 -- items that define them.
 --
 
--- legacy functions referenced by movements.xml
+-- Handles equipping items with custom attributes
 function onEquip(player, item, slot, isCheck)
     if isCheck then
         return true
@@ -20,6 +20,7 @@ function onEquip(player, item, slot, isCheck)
     return true
 end
 
+-- Handles unequipping items with custom attributes
 function onDeEquip(player, item, slot, isCheck)
     if isCheck then
         return true
@@ -35,6 +36,6 @@ function onDeEquip(player, item, slot, isCheck)
     return true
 end
 
--- keep the original function names for compatibility
+-- Aliases for compatibility
 onEquipCustomAttributes = onEquip
 onDeEquipCustomAttributes = onDeEquip

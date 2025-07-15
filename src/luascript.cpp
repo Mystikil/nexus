@@ -1894,65 +1894,66 @@ void LuaScriptInterface::registerFunctions() {
 	registerEnum(L, TILESTATE_FLOORCHANGE_EAST_ALT)
 	registerEnum(L, TILESTATE_SUPPORTS_HANGABLE)
 
-	registerEnum(L, WEAPON_NONE)
-	registerEnum(L, WEAPON_SWORD)
-	registerEnum(L, WEAPON_CLUB)
-	registerEnum(L, WEAPON_AXE)
-	registerEnum(L, WEAPON_SHIELD)
-	registerEnum(L, WEAPON_DISTANCE)
-	registerEnum(L, WEAPON_WAND)
-	registerEnum(L, WEAPON_AMMO)
+	registerEnum(L, WEAPON_NONE);
+	registerEnum(L, WEAPON_SWORD);
+	registerEnum(L, WEAPON_CLUB);
+	registerEnum(L, WEAPON_AXE);
+	registerEnum(L, WEAPON_SHIELD);
+	registerEnum(L, WEAPON_DISTANCE);
+	registerEnum(L, WEAPON_WAND);
+	registerEnum(L, WEAPON_AMMO);
 
-        registerEnum(L, WORLD_TYPE_NO_PVP)
-        registerEnum(L, WORLD_TYPE_PVP)
-        registerEnum(L, WORLD_TYPE_PVP_ENFORCED)
+	registerEnum(L, WORLD_TYPE_NO_PVP);
+	registerEnum(L, WORLD_TYPE_PVP);
+	registerEnum(L, WORLD_TYPE_PVP_ENFORCED);
 
-        registerTable(L, "GateRank");
-        registerEnum(L, GateRank::E);
-        registerEnumIn(L, "GateRank", GateRank::E);
-        registerEnum(L, GateRank::D);
-        registerEnumIn(L, "GateRank", GateRank::D);
-        registerEnum(L, GateRank::C);
-        registerEnumIn(L, "GateRank", GateRank::C);
-        registerEnum(L, GateRank::B);
-        registerEnumIn(L, "GateRank", GateRank::B);
-        registerEnum(L, GateRank::A);
-        registerEnumIn(L, "GateRank", GateRank::A);
-        registerEnum(L, GateRank::S);
-        registerEnumIn(L, "GateRank", GateRank::S);
+	registerTable(L, "GateRank");
+	registerEnum(L, GateRank::E);
+	registerEnumIn(L, "GateRank", GateRank::E);
+	registerEnum(L, GateRank::D);
+	registerEnumIn(L, "GateRank", GateRank::D);
+	registerEnum(L, GateRank::C);
+	registerEnumIn(L, "GateRank", GateRank::C);
+	registerEnum(L, GateRank::B);
+	registerEnumIn(L, "GateRank", GateRank::B);
+	registerEnum(L, GateRank::A);
+	registerEnumIn(L, "GateRank", GateRank::A);
+	registerEnum(L, GateRank::S);
+	registerEnumIn(L, "GateRank", GateRank::S);
 
-        registerTable(L, "GateType");
-        registerEnum(L, GateType::NORMAL);
-        registerEnumIn(L, "GateType", GateType::NORMAL);
-        registerEnum(L, GateType::RED);
-        registerEnumIn(L, "GateType", GateType::RED);
-        registerEnum(L, GateType::DOUBLE);
-        registerEnumIn(L, "GateType", GateType::DOUBLE);
+	registerTable(L, "GateType");
+	registerEnum(L, GateType::NORMAL);
+	registerEnumIn(L, "GateType", GateType::NORMAL);
+	registerEnum(L, GateType::RED);
+	registerEnumIn(L, "GateType", GateType::RED);
+	registerEnum(L, GateType::DOUBLE);
+	registerEnumIn(L, "GateType", GateType::DOUBLE);
 
 	// Use with container:addItem, container:addItemEx and possibly other functions.
-	registerEnum(L, FLAG_NOLIMIT)
-	registerEnum(L, FLAG_IGNOREBLOCKITEM)
-	registerEnum(L, FLAG_IGNOREBLOCKCREATURE)
-	registerEnum(L, FLAG_CHILDISOWNER)
-	registerEnum(L, FLAG_PATHFINDING)
-	registerEnum(L, FLAG_IGNOREFIELDDAMAGE)
-	registerEnum(L, FLAG_IGNORENOTMOVEABLE)
-	registerEnum(L, FLAG_IGNOREAUTOSTACK)
+	registerEnum(L, FLAG_NOLIMIT);
+	registerEnum(L, FLAG_IGNOREBLOCKITEM);
+	registerEnum(L, FLAG_IGNOREBLOCKCREATURE);
+	registerEnum(L, FLAG_CHILDISOWNER);
+	registerEnum(L, FLAG_PATHFINDING);
+	registerEnum(L, FLAG_IGNOREFIELDDAMAGE);
+	registerEnum(L, FLAG_IGNORENOTMOVEABLE);
+	registerEnum(L, FLAG_IGNOREAUTOSTACK);
 
 	// Use with itemType:getSlotPosition
-	registerEnum(L, SLOTP_WHEREEVER)
-	registerEnum(L, SLOTP_HEAD)
-	registerEnum(L, SLOTP_NECKLACE)
-	registerEnum(L, SLOTP_BACKPACK)
-	registerEnum(L, SLOTP_ARMOR)
-	registerEnum(L, SLOTP_RIGHT)
-	registerEnum(L, SLOTP_LEFT)
-	registerEnum(L, SLOTP_LEGS)
-	registerEnum(L, SLOTP_FEET)
-	registerEnum(L, SLOTP_RING)
-	registerEnum(L, SLOTP_AMMO)
-	registerEnum(L, SLOTP_DEPOT)
-	registerEnum(L, SLOTP_TWO_HAND)
+	registerEnum(L, SLOTP_WHEREEVER);
+	registerEnum(L, SLOTP_HEAD);
+	registerEnum(L, SLOTP_NECKLACE);
+	registerEnum(L, SLOTP_BACKPACK);
+	registerEnum(L, SLOTP_ARMOR);
+	registerEnum(L, SLOTP_RIGHT);
+	registerEnum(L, SLOTP_LEFT);
+	registerEnum(L, SLOTP_LEGS);
+	registerEnum(L, SLOTP_FEET);
+	registerEnum(L, SLOTP_RING);
+	registerEnum(L, SLOTP_AMMO);
+	registerEnum(L, SLOTP_DEPOT);
+	registerEnum(L, SLOTP_TWO_HAND);
+
 
 	// Use with combat functions
 	registerEnum(L, ORIGIN_NONE)
