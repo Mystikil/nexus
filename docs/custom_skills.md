@@ -26,6 +26,7 @@ The default configuration includes several sample skills that can be extended:
 - **Sailing** – navigate and captain ships.
 - **Tailoring** – sew cloth garments and bags.
 
+
 ## Adding Skills
 
 1. Edit `data/XML/custom_skills.xml` and add `<skill>` entries. Each skill has an
