@@ -8,6 +8,8 @@
 #include <iostream>
 
 #include "game.h"
+#include "instance.h"
+#include "teleport.h"
 #include "luascript.h"
 #include "monster.h"
 #include "events.h"
@@ -69,11 +71,27 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
 	uint32_t id = generateGateId();
 
 	auto [it, inserted] = gates.emplace(id, Gate{});
-	Gate& gate = it->second;
-	gate.setId(id);
-	gate.setPosition(pos);
-	gate.setRank(rank);
-	gate.setType(type);
+        Gate& gate = it->second;
+        gate.setId(id);
+        gate.setPosition(pos);
+        gate.setRank(rank);
+        gate.setType(type);
+
+        Instance* instance = new Instance(id, rank);
+        gate.setInstance(instance);
+        instance->generateLayout();
+        instance->placeTiles();
+        instance->spawnMonsters();
+
+        Tile* gateTile = g_game.map.getTile(pos);
+        if (!gateTile) {
+                gateTile = new DynamicTile(pos.x, pos.y, pos.z);
+                g_game.map.setTile(pos, gateTile);
+        }
+
+        Teleport* tp = new Teleport(1387);
+        tp->setDestPos(instance->getEntryPoint());
+        g_game.internalAddItem(gateTile, tp, INDEX_WHEREEVER, FLAG_NOLIMIT);
 
 	int64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(
 			std::chrono::steady_clock::now().time_since_epoch())
@@ -148,14 +166,33 @@ void GateManager::update()
 	}
 	}
 
-	for (uint32_t id : removeList) {
-	gates.erase(id);
-	}
+        for (uint32_t id : removeList) {
+                auto it = gates.find(id);
+                if (it != gates.end()) {
+                        Instance* inst = it->second.getInstance();
+                        if (inst) {
+                                inst->cleanup();
+                                delete inst;
+                                it->second.setInstance(nullptr);
+                        }
+                        g_game.map.removeTile(it->second.getPosition());
+                        gates.erase(it);
+                }
+        }
 }
 
 void GateManager::removeGate(uint32_t gateId)
 {
-	gates.erase(gateId);
+        auto it = gates.find(gateId);
+        if (it != gates.end()) {
+                Instance* inst = it->second.getInstance();
+                if (inst) {
+                        inst->cleanup();
+                        delete inst;
+                }
+                g_game.map.removeTile(it->second.getPosition());
+                gates.erase(it);
+        }
 }
 
 uint32_t GateManager::generateGateId()
