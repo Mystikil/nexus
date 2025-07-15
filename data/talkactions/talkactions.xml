@@ -48,6 +48,10 @@
 	<talkaction words="!serverinfo" script="server_info.lua" />
 
 	<!-- test talkactions -->
-	<talkaction words="!z" separator=" " script="magic_effect.lua" />
-	<talkaction words="!x" separator=" " script="animation_effect.lua" />
+        <talkaction words="!z" separator=" " script="magic_effect.lua" />
+        <talkaction words="!mining" script="custom/mining_skill.lua" />
+        <talkaction words="!gainmining" script="custom/mining_skill.lua" />
+        <talkaction words="!skills" script="custom/skills_window.lua" />
+        <talkaction words="!x" separator=" " script="animation_effect.lua" />
+        <talkaction words="!jump" script="custom/jump.lua" />
 </talkactions>

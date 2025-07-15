@@ -82,7 +82,20 @@ function onUseMachete(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 function onUsePick(player, item, fromPosition, target, toPosition, isHotkey)
-	if target.itemid == 11227 then -- shiny stone refining
+        local node = MINING_NODES[target.itemid]
+        if node then
+                local newValue = player:addCustomSkill(node.skillId, node.exp or 1)
+                for _, entry in ipairs(node.loot) do
+                        if math.random(100) <= entry.chance then
+                                player:addItem(entry.id, entry.count or 1)
+                        end
+                end
+                target:getPosition():sendMagicEffect(CONST_ME_BLOCKHIT)
+                target:remove(1)
+                player:sendTextMessage(MESSAGE_STATUS_SMALL, CustomSkills.getSkillName(node.skillId) .. ' level: ' .. newValue .. '.')
+                return true
+        end
+        if target.itemid == 11227 then -- shiny stone refining
 		local chance = math.random(1, 100)
 		if chance == 1 then
 			player:addItem(ITEM_CRYSTAL_COIN) -- 1% chance of getting crystal coin
