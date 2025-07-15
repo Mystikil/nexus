@@ -3,6 +3,7 @@
 #include "configmanager.h"
 #include "otserv.h"
 #include "tools.h"
+#include "error.h"
 
 static bool argumentsHandler(const std::vector<std::string_view>& args) {
 	for (const auto& arg : args) {
@@ -37,10 +38,11 @@ static bool argumentsHandler(const std::vector<std::string_view>& args) {
 
 int main(int argc, const char** argv) {
 	std::vector<std::string_view> args(argv, argv + argc);
-	if (!argumentsHandler(args)) {
-		return 1;
-	}
+        if (!argumentsHandler(args)) {
+                return 1;
+        }
 
-	startServer();
-	return 0;
+        ErrorLog::setup();
+        startServer();
+        return 0;
 }
