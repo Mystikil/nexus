@@ -1907,7 +1907,8 @@ void LuaScriptInterface::registerFunctions() {
 	registerEnum(L, WORLD_TYPE_PVP);
 	registerEnum(L, WORLD_TYPE_PVP_ENFORCED);
 
-	registerTable(L, "GateRank");
+        // Gate system enums
+        registerTable(L, "GateRank");
 	registerEnum(L, GateRank::E);
 	registerEnumIn(L, "GateRank", GateRank::E);
 	registerEnum(L, GateRank::D);
