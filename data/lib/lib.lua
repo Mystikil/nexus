@@ -12,4 +12,3 @@ dofile('data/lib/rarity_config.lua')
 dofile('data/lib/map_chunk_loader.lua')
 dofile('data/lib/custom_skills.lua')
 dofile('data/lib/mining_nodes.lua')
-

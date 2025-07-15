@@ -20,6 +20,12 @@ The default configuration includes several sample skills that can be extended:
 - **Cooking** – prepare tasty meals.
 - **Fletching** – craft bows and arrows.
 - **Herbalism** – harvest herbs for potions.
+- **Alchemy** – brew potions and elixirs.
+- **Carpentry** – build furniture and structures.
+- **Hunting** – track and hunt creatures.
+- **Sailing** – navigate and captain ships.
+- **Tailoring** – sew cloth garments and bags.
+
 
 ## Adding Skills
 

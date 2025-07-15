@@ -7,4 +7,9 @@
     <skill id="5" name="Cooking" description="Prepare tasty meals." />
     <skill id="6" name="Fletching" description="Craft bows and arrows." />
     <skill id="7" name="Herbalism" description="Harvest herbs for potions." />
+    <skill id="8" name="Alchemy" description="Brew potions and elixirs." />
+    <skill id="9" name="Carpentry" description="Build furniture and structures." />
+    <skill id="10" name="Hunting" description="Track and hunt creatures." />
+    <skill id="11" name="Sailing" description="Navigate and captain ships." />
+    <skill id="12" name="Tailoring" description="Sew cloth garments and bags." />
 </customskills>
