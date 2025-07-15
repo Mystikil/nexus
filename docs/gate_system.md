@@ -45,6 +45,30 @@ Each `Gate` object tracks the portal state and its associated instance.
 - `getGate(id)` – Returns a pointer to the stored `Gate` or `nullptr` if the ID is unknown.
 - `removeGate(id)` – Erases a gate immediately from the manager.
 
+### GateSpawnConfig
+
+`GateManager` can automatically spawn portals based on a Lua table named
+`GateSpawnConfig`. The manager reads this table from
+`data/scripts/gate/spawn_config.lua` during startup via
+`GateManager::loadSpawnConfig`. The config defines a centre position to spawn
+around, a radius, how often spawning is checked and a list of gate templates.
+
+```lua
+GateSpawnConfig = {
+    center = {x = 1000, y = 1000, z = 7},
+    radius = 25,
+    interval = 5 * 60 * 1000,
+    gates = {
+        {rank = GateRank.E, type = GateType.NORMAL, count = 2},
+        {rank = GateRank.D, type = GateType.NORMAL, count = 1},
+    }
+}
+```
+
+Every `interval` the manager counts existing gates that match each entry. If
+fewer than `count` are present inside the `radius` around `center`, new gates are
+spawned until the desired number exists.
+
 ### Integration Notes
 
 The server now calls `GateManager::update()` every tick from the main game loop, so gates expire automatically. You can control gates from Lua using:
@@ -52,7 +76,7 @@ The server now calls `GateManager::update()` every tick from the main game loop,
 1. `Game.spawnGate(position, rank[, type])` – returns the created gate id.
 2. `Game.removeGate(id)` – immediately deletes the gate.
 
-Still provide `onGateBreak(gate)` and/or `onGateRemoved(gate)` functions inside `data/scripts/gate/` if you want custom logic when a gate shatters or is removed. Use the `GateBreakWaves` table to list which monsters should spawn for each rank. The `Instance` class and dungeon logic are still experimental and need to be fleshed out.
+Still provide `onGateBreak(gate)` and/or `onGateRemoved(gate)` functions inside `data/scripts/gate/` if you want custom logic when a gate shatters or is removed. Customise break waves by editing the `GateBreakWaves` table for each rank. The `Instance` class and dungeon logic are still experimental and need to be fleshed out.
 
 ### Lua Hook Example
 
