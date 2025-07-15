@@ -71,41 +71,54 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
 	uint32_t id = generateGateId();
 
 	auto [it, inserted] = gates.emplace(id, Gate{});
-        Gate& gate = it->second;
-        gate.setId(id);
-        gate.setPosition(pos);
-        gate.setRank(rank);
-        gate.setType(type);
+	Gate& gate = it->second;
+	gate.setId(id);
+	gate.setPosition(pos);
+	gate.setRank(rank);
+	gate.setType(type);
 
-        Instance* instance = nullptr;
-        if (type == GateType::NORMAL || type == GateType::RED || type == GateType::DOUBLE) {
-                instance = new Instance(id, rank);
-                instance->generateLayout();
-                instance->placeTiles();
-                instance->spawnMonsters();
-                gate.setInstance(instance);
-                std::cout << "[GateManager] Instance attached to gate " << id << std::endl;
-        }
+	// Create dungeon instance if applicable
+	Instance* instance = nullptr;
+	if (type == GateType::NORMAL || type == GateType::RED || type == GateType::DOUBLE) {
+		instance = new Instance(id, rank);
+		instance->generateLayout();
+		instance->placeTiles();
+		instance->spawnMonsters();
+		gate.setInstance(instance);
+		std::cout << "[GateManager] Instance attached to gate " << id << std::endl;
+	}
 
-        Tile* gateTile = g_game.map.getTile(pos);
-        if (!gateTile) {
-                gateTile = new DynamicTile(pos.x, pos.y, pos.z);
-                g_game.map.setTile(pos, gateTile);
-        }
+	// Create teleport tile at gate position
+	Tile* gateTile = g_game.map.getTile(pos);
+	if (!gateTile) {
+		gateTile = new DynamicTile(pos.x, pos.y, pos.z);
+		g_game.map.setTile(pos, gateTile);
+	}
 
+	// Create teleport item and set its destination
+	Teleport* tp = new Teleport(1387);
+	if (instance) {
+		tp->setDestPos(instance->getEntryPoint());
+	} else {
+		tp->setDestPos(pos); // fallback if instance is null
+	}
+
+	g_game.internalAddItem(gateTile, tp, INDEX_WHEREEVER, FLAG_NOLIMIT);
+
+	// Set timing values
 	int64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(
-			std::chrono::steady_clock::now().time_since_epoch())
-			.count();
+		std::chrono::steady_clock::now().time_since_epoch()).count();
 	gate.setCreationTime(now);
 
 	uint32_t minutes = (static_cast<uint8_t>(rank) + 1) * 10; // 10-60 minutes depending on rank
 	gate.setExpirationTime(now + static_cast<int64_t>(minutes) * 60 * 1000);
 
 	std::cout << "[GateManager] Spawned gate " << id << " at (" << pos.getX() << ','
-		  << pos.getY() << ',' << static_cast<int>(pos.getZ()) << ")" << std::endl;
+		<< pos.getY() << ',' << static_cast<int>(pos.getZ()) << ")" << std::endl;
 
 	return &gate;
 }
+
 
 Gate* GateManager::getGate(uint32_t gateId)
 {
