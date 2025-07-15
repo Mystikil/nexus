@@ -1,0 +1,6 @@
+*.zip 
+*.dll 
+*.exe 
+/build/ 
+/vcpkg_installed/ 
+/vc22/.vs/ 

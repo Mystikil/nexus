@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Weaponsmith" script="weapon_crafter.lua" walkinterval="2000" floorchange="0">
+    <health now="100" max="100" />
+    <look type="132" head="78" body="88" legs="114" feet="0" addons="1" />
+    <parameters>
+        <parameter key="message_greet" value="Hello |PLAYERNAME|. I can craft weapons if you have the right materials." />
+    </parameters>
+</npc>
