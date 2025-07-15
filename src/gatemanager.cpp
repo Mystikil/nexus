@@ -122,22 +122,16 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
 
 void GateManager::loadSpawnConfig(const std::string& file)
 {
-        lua_State* L = luaL_newstate();
-        if (!L) {
-                return;
-        }
-
-        luaL_openlibs(L);
-
+        lua_State* L = g_luaEnvironment.getLuaState();
         if (luaL_dofile(L, file.c_str()) != 0) {
                 std::cout << "[Error - GateManager::loadSpawnConfig] " << lua_tostring(L, -1) << std::endl;
-                lua_close(L);
+                lua_pop(L, 1);
                 return;
         }
 
         lua_getglobal(L, "GateSpawnConfig");
         if (!lua_istable(L, -1)) {
-                lua_close(L);
+                lua_pop(L, 1);
                 return;
         }
 
@@ -151,7 +145,7 @@ void GateManager::loadSpawnConfig(const std::string& file)
         spawnIntervalMs = lua::getField<uint32_t>(L, -1, "interval", 60000);
 
         spawnRules.clear();
-        lua_getfield(L, -1, "rules");
+        lua_getfield(L, -1, "gates");
         if (lua_istable(L, -1)) {
                 lua_pushnil(L);
                 while (lua_next(L, -2) != 0) {
@@ -159,14 +153,12 @@ void GateManager::loadSpawnConfig(const std::string& file)
                         SpawnRule rule;
                         rule.rank = static_cast<GateRank>(lua::getField<int>(L, tableIndex, "rank"));
                         rule.type = static_cast<GateType>(lua::getField<int>(L, tableIndex, "type", static_cast<int>(GateType::NORMAL)));
-                        rule.maxCount = lua::getField<uint32_t>(L, tableIndex, "max", 0);
+                        rule.maxCount = lua::getField<uint32_t>(L, tableIndex, "count", 0);
                         spawnRules.push_back(rule);
                         lua_pop(L, 1); // pop value, keep key
                 }
         }
-        lua_pop(L, 2); // rules table and GateSpawnConfig
-
-        lua_close(L);
+        lua_pop(L, 2); // gates table and GateSpawnConfig
 }
 
 
