@@ -1440,4 +1440,21 @@
 	<movevent event="DeEquip" itemid="25411" slot="shield" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="25414" slot="shield" level="200" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="25414" slot="shield" function="onDeEquipItem" />
+        <!-- Custom attribute handlers -->
+        <movevent event="Equip" fromid="1" toid="30000" slot="head" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="head" script="apply_custom_attributes.lua" />
+        <movevent event="Equip" fromid="1" toid="30000" slot="necklace" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="necklace" script="apply_custom_attributes.lua" />
+        <movevent event="Equip" fromid="1" toid="30000" slot="armor" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="armor" script="apply_custom_attributes.lua" />
+        <movevent event="Equip" fromid="1" toid="30000" slot="legs" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="legs" script="apply_custom_attributes.lua" />
+        <movevent event="Equip" fromid="1" toid="30000" slot="feet" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="feet" script="apply_custom_attributes.lua" />
+        <movevent event="Equip" fromid="1" toid="30000" slot="ring" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="ring" script="apply_custom_attributes.lua" />
+        <movevent event="Equip" fromid="1" toid="30000" slot="hand" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="hand" script="apply_custom_attributes.lua" />
+        <movevent event="Equip" fromid="1" toid="30000" slot="shield" script="apply_custom_attributes.lua" />
+        <movevent event="DeEquip" fromid="1" toid="30000" slot="shield" script="apply_custom_attributes.lua" />
 </movements>
