@@ -22,6 +22,8 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/fileloader.cpp
         ${CMAKE_CURRENT_LIST_DIR}/game.cpp
         ${CMAKE_CURRENT_LIST_DIR}/gatemanager.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/instance.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/dungeon_generator.cpp
         ${CMAKE_CURRENT_LIST_DIR}/globalevent.cpp
 	${CMAKE_CURRENT_LIST_DIR}/groups.cpp
 	${CMAKE_CURRENT_LIST_DIR}/guild.cpp
@@ -106,6 +108,8 @@ set(tfs_HDR
         ${CMAKE_CURRENT_LIST_DIR}/game.h
         ${CMAKE_CURRENT_LIST_DIR}/gate.h
         ${CMAKE_CURRENT_LIST_DIR}/gatemanager.h
+        ${CMAKE_CURRENT_LIST_DIR}/instance.h
+        ${CMAKE_CURRENT_LIST_DIR}/dungeon_generator.h
         ${CMAKE_CURRENT_LIST_DIR}/globalevent.h
 	${CMAKE_CURRENT_LIST_DIR}/groups.h
 	${CMAKE_CURRENT_LIST_DIR}/guild.h
