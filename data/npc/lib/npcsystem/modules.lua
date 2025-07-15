@@ -1,7 +1,8 @@
 -- Advanced NPC System by Jiddo
 
 if not Modules then
-	-- default words for greeting and ungreeting the npc. Should be a table containing all such words.
+    dofile('data/npc/lib/reputation.lua')
+        -- default words for greeting and ungreeting the npc. Should be a table containing all such words.
 	FOCUS_GREETWORDS = {"hi", "hello"}
 	FOCUS_FAREWELLWORDS = {"bye", "farewell"}
 
@@ -976,13 +977,16 @@ if not Modules then
 			totalCost = ItemType(itemid):isStackable() and totalCost + 20 or totalCost + (math.max(1, math.floor(amount / ItemType(ITEM_SHOPPING_BAG):getCapacity())) * 20)
 		end
 
-		local player = Player(cid)
-		local parseInfo = {
-			[TAG_PLAYERNAME] = player:getName(),
-			[TAG_ITEMCOUNT] = amount,
-			[TAG_TOTALCOST] = totalCost,
-			[TAG_ITEMNAME] = shopItem.name
-		}
+                local player = Player(cid)
+                local npcName = Npc():getName()
+                totalCost = math.floor(totalCost * Reputation.priceModifier(player, npcName))
+                Reputation.add(player, npcName)
+                local parseInfo = {
+                        [TAG_PLAYERNAME] = player:getName(),
+                        [TAG_ITEMCOUNT] = amount,
+                        [TAG_TOTALCOST] = totalCost,
+                        [TAG_ITEMNAME] = shopItem.name
+                }
 
 		if player:getTotalMoney() < totalCost then
 			local msg = self.npcHandler:getMessage(MESSAGE_NEEDMONEY)

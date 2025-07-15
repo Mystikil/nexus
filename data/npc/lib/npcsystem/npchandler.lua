@@ -1,7 +1,8 @@
 -- Advanced NPC System by Jiddo
 
 if not NpcHandler then
-	-- Constant talkdelay behaviors.
+    dofile('data/npc/lib/reputation.lua')
+        -- Constant talkdelay behaviors.
 	TALKDELAY_NONE = 0 -- No talkdelay. Npc will reply immedeatly.
 	TALKDELAY_ONTHINK = 1 -- Talkdelay handled through the onThink callback function. (Default)
 	TALKDELAY_EVENT = 2 -- Not yet implemented
@@ -326,8 +327,8 @@ if not NpcHandler then
 				local playerName = player and player:getName() or -1
 				local parseInfo = { [TAG_PLAYERNAME] = playerName }
 				self:resetNpc(cid)
-				msg = self:parseMessage(msg, parseInfo)
-				self:say(msg, cid, true)
+                                        msg = self:parseMessage(msg, parseInfo)
+                                        self:say(msg, cid, true)
 				self:releaseFocus(cid)
 			end
 		end
@@ -343,9 +344,11 @@ if not NpcHandler then
 					local player = Player(cid)
 					local playerName = player and player:getName() or -1
 					local parseInfo = { [TAG_PLAYERNAME] = playerName }
-					msg = self:parseMessage(msg, parseInfo)
-					self:say(msg, cid, true)
-				else
+                                        msg = self:parseMessage(msg, parseInfo)
+                                        self:say(msg, cid, true)
+                                        local npcName = Npc():getName()
+                                        Reputation.handleGreet(player, npcName)
+                                else
 					return
 				end
 			else
