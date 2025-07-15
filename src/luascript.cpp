@@ -36,7 +36,9 @@
 #include "teleport.h"
 #include "weapons.h"
 
+#include "error.h"
 #include <ranges>
+#include <sstream>
 
 extern Chat* g_chat;
 extern Game g_game;
@@ -597,31 +599,36 @@ const std::string& LuaScriptInterface::getFileById(int32_t scriptId) {
 void lua::reportError(std::string_view function, std::string_view error_desc, lua_State* L /*= nullptr*/, bool stack_trace /*= false*/) {
 	auto [scriptId, scriptInterface, callbackId, timerEvent] = getScriptEnv()->getEventInfo();
 
-	std::cout << "\nLua Script Error: ";
+       std::ostringstream ss;
+       ss << "Lua Script Error: ";
 
-	if (scriptInterface) {
-		std::cout << '[' << scriptInterface->getInterfaceName() << "]\n";
+       if (scriptInterface) {
+               ss << '[' << scriptInterface->getInterfaceName() << "]\n";
 
-		if (timerEvent) {
-			std::cout << "in a timer event called from:\n";
-		}
+               if (timerEvent) {
+                       ss << "in a timer event called from:\n";
+               }
 
-		if (callbackId) {
-			std::cout << "in callback: " << scriptInterface->getFileById(callbackId) << '\n';
-		}
+               if (callbackId) {
+                       ss << "in callback: " << scriptInterface->getFileById(callbackId) << '\n';
+               }
 
-		std::cout << scriptInterface->getFileById(scriptId) << '\n';
-	}
+               ss << scriptInterface->getFileById(scriptId) << '\n';
+       }
 
-	if (!function.empty()) {
-		std::cout << function << "(). ";
-	}
+       if (!function.empty()) {
+               ss << function << "(). ";
+       }
 
-	if (L && stack_trace) {
-		std::cout << getStackTrace(L, error_desc) << '\n';
-	} else {
-		std::cout << error_desc << '\n';
-	}
+       if (L && stack_trace) {
+               ss << getStackTrace(L, error_desc) << '\n';
+       } else {
+               ss << error_desc << '\n';
+       }
+
+       std::string msg = ss.str();
+       std::cout << '\n' << msg;
+       ErrorLog::log(msg);
 }
 
 bool LuaScriptInterface::pushFunction(int32_t functionId) {
