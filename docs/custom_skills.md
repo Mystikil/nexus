@@ -12,6 +12,7 @@ This server includes a lightweight Lua based skill system that allows adding new
   sample *Mining* skill. Use `!skills` at any time to view all of your custom skill
   progress in a modal window.
 
+
 The default configuration includes several sample skills that can be extended:
 
 - **Mining** – extract ore from rocks.
@@ -27,6 +28,7 @@ The default configuration includes several sample skills that can be extended:
 - **Sailing** – navigate and captain ships.
 - **Tailoring** – sew cloth garments and bags.
 
+
 ## Adding Skills
 
 1. Edit `data/XML/custom_skills.xml` and add `<skill>` entries. Each skill has an
@@ -38,6 +40,7 @@ The default configuration includes several sample skills that can be extended:
 Players can interact with the new skills via Lua scripts. The supplied
 `talkaction` demonstrates how to view a skill value, but experience is now earned
 by using the appropriate tool on special resource nodes.
+
 
 - `!mining` &ndash; shows your current Mining level.
 - `!skills` &ndash; opens a modal window listing all of your custom skills and levels.
