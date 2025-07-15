@@ -1907,16 +1907,27 @@ void LuaScriptInterface::registerFunctions() {
         registerEnum(L, WORLD_TYPE_PVP)
         registerEnum(L, WORLD_TYPE_PVP_ENFORCED)
 
-        registerEnum(L, GateRank::E)
-        registerEnum(L, GateRank::D)
-        registerEnum(L, GateRank::C)
-        registerEnum(L, GateRank::B)
-        registerEnum(L, GateRank::A)
-        registerEnum(L, GateRank::S)
+        registerTable(L, "GateRank");
+        registerEnum(L, GateRank::E);
+        registerEnumIn(L, "GateRank", GateRank::E);
+        registerEnum(L, GateRank::D);
+        registerEnumIn(L, "GateRank", GateRank::D);
+        registerEnum(L, GateRank::C);
+        registerEnumIn(L, "GateRank", GateRank::C);
+        registerEnum(L, GateRank::B);
+        registerEnumIn(L, "GateRank", GateRank::B);
+        registerEnum(L, GateRank::A);
+        registerEnumIn(L, "GateRank", GateRank::A);
+        registerEnum(L, GateRank::S);
+        registerEnumIn(L, "GateRank", GateRank::S);
 
-        registerEnum(L, GateType::NORMAL)
-        registerEnum(L, GateType::RED)
-        registerEnum(L, GateType::DOUBLE)
+        registerTable(L, "GateType");
+        registerEnum(L, GateType::NORMAL);
+        registerEnumIn(L, "GateType", GateType::NORMAL);
+        registerEnum(L, GateType::RED);
+        registerEnumIn(L, "GateType", GateType::RED);
+        registerEnum(L, GateType::DOUBLE);
+        registerEnumIn(L, "GateType", GateType::DOUBLE)
 
 	// Use with container:addItem, container:addItemEx and possibly other functions.
 	registerEnum(L, FLAG_NOLIMIT)
