@@ -246,6 +246,9 @@
     <ClCompile Include="..\src\weapons.cpp" />
     <ClCompile Include="..\src\wildcardtree.cpp" />
     <ClCompile Include="..\src\xtea.cpp" />
+    <ClCompile Include="..\src\gatemanager.cpp" />
+    <ClCompile Include="..\src\instance.cpp" />
+    <ClCompile Include="..\src\dungeon_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\actions.h" />
@@ -332,6 +335,10 @@
     <ClInclude Include="..\src\vocation.h" />
     <ClInclude Include="..\src\weapons.h" />
     <ClInclude Include="..\src\wildcardtree.h" />
+    <ClInclude Include="..\src\gate.h" />
+    <ClInclude Include="..\src\gatemanager.h" />
+    <ClInclude Include="..\src\instance.h" />
+    <ClInclude Include="..\src\dungeon_generator.h" />
     <ClInclude Include="..\src\xtea.h" />
   </ItemGroup>
   <ItemGroup>
