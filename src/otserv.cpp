@@ -173,11 +173,13 @@ namespace {
 			return;
 		}
 
-		std::cout << ">> Loading lua monsters" << std::endl;
-		if (!g_scripts->loadScripts("monster", false, false)) {
-			startupErrorMessage("Failed to load lua monsters");
-			return;
-		}
+                std::cout << ">> Loading lua monsters" << std::endl;
+                if (!g_scripts->loadScripts("monster", false, false)) {
+                        startupErrorMessage("Failed to load lua monsters");
+                        return;
+                }
+
+                g_gateManager.loadSpawnConfig("data/scripts/gate/spawn_config.lua");
 
 		std::cout << ">> Loading outfits" << std::endl;
 		if (!Outfits::getInstance().loadFromXml()) {
