@@ -9,7 +9,9 @@ This server includes a lightweight Lua based skill system that allows adding new
 - A Lua library (`data/lib/custom_skills.lua`) loads the XML file and exposes helper
   functions to read or modify a player's skill values.
 - Example commands `!mining` and `!gainmining` are provided to check and train the
-  sample *Mining* skill.
+  sample *Mining* skill. Use `!skills` at any time to view all of your custom skill
+  progress in a modal window.
+
 
 The default configuration includes several sample skills that can be extended:
 
@@ -39,7 +41,9 @@ Players can interact with the new skills via Lua scripts. The supplied
 `talkaction` demonstrates how to view a skill value, but experience is now earned
 by using the appropriate tool on special resource nodes.
 
-- `!mining` &ndash; shows your current Mining level.
+- Use '!skills' to show your current Mining levelis also
+ opens a modal window listing all of your custom skills and levels.
+
 
 To grant experience, define mining nodes in `data/lib/mining_nodes.lua` and make
 players use a pick (item id `2553`) on those nodes. Each node entry specifies the
