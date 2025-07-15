@@ -235,3 +235,6 @@ function checkDuplicateStorageKeys(varName)
 		return duplicates
 	end
 end
+CustomSkills.load()
+
+
