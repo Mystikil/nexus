@@ -20,8 +20,9 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/depotlocker.cpp
 	${CMAKE_CURRENT_LIST_DIR}/events.cpp
 	${CMAKE_CURRENT_LIST_DIR}/fileloader.cpp
-	${CMAKE_CURRENT_LIST_DIR}/game.cpp
-	${CMAKE_CURRENT_LIST_DIR}/globalevent.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/game.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/gatemanager.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/globalevent.cpp
 	${CMAKE_CURRENT_LIST_DIR}/groups.cpp
 	${CMAKE_CURRENT_LIST_DIR}/guild.cpp
 	${CMAKE_CURRENT_LIST_DIR}/house.cpp
@@ -101,9 +102,11 @@ set(tfs_HDR
 	${CMAKE_CURRENT_LIST_DIR}/depotlocker.h
 	${CMAKE_CURRENT_LIST_DIR}/enums.h
 	${CMAKE_CURRENT_LIST_DIR}/events.h
-	${CMAKE_CURRENT_LIST_DIR}/fileloader.h
-	${CMAKE_CURRENT_LIST_DIR}/game.h
-	${CMAKE_CURRENT_LIST_DIR}/globalevent.h
+        ${CMAKE_CURRENT_LIST_DIR}/fileloader.h
+        ${CMAKE_CURRENT_LIST_DIR}/game.h
+        ${CMAKE_CURRENT_LIST_DIR}/gate.h
+        ${CMAKE_CURRENT_LIST_DIR}/gatemanager.h
+        ${CMAKE_CURRENT_LIST_DIR}/globalevent.h
 	${CMAKE_CURRENT_LIST_DIR}/groups.h
 	${CMAKE_CURRENT_LIST_DIR}/guild.h
 	${CMAKE_CURRENT_LIST_DIR}/house.h
