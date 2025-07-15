@@ -13,15 +13,24 @@ event.onDropLoot = function(self, corpse)
 		doCreateLoot = true
 	end
 
-	if doCreateLoot then
-		local monsterLoot = mType:getLoot()
-		for i = 1, #monsterLoot do
-			local item = corpse:createLootItem(monsterLoot[i])
-			if not item then
-				print("[Warning] DropLoot: Could not add loot item to corpse.")
-			end
-		end
-	end
+        if doCreateLoot then
+                local monsterLoot = mType:getLoot()
+                local bonus = 0
+                if player then
+                        bonus = player:getCustomAttribute(20)
+                end
+                for i = 1, #monsterLoot do
+                        local entry = monsterLoot[i]
+                        local chance = entry.chance
+                        if bonus > 0 then
+                                chance = math.min(100000, chance + math.floor(chance * bonus / 100))
+                        end
+                        local item = corpse:createLootItem({itemid = entry.itemid, countmax = entry.countmax, chance = chance})
+                        if not item then
+                                print("[Warning] DropLoot: Could not add loot item to corpse.")
+                        end
+                end
+        end
 
 	if player then
 		local text

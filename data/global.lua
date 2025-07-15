@@ -236,5 +236,6 @@ function checkDuplicateStorageKeys(varName)
 	end
 end
 CustomSkills.load()
+CustomAttributes.load()
 
 
