@@ -25,6 +25,7 @@
 #include "npc.h"
 #include "outfit.h"
 #include "party.h"
+#include "gatemanager.h"
 #include "player.h"
 #include "protocolstatus.h"
 #include "scheduler.h"
