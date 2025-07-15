@@ -7,11 +7,11 @@ from `data/scripts/gate/spawn_config.lua`.
 ```lua
 GateSpawnConfig = {
     center = {x = 1000, y = 1000, z = 7},
-    radius = 25,      -- tiles around the center
-    interval = 60000, -- milliseconds between spawn checks
-    rules = {
-        {rank = GateRank.E, type = GateType.NORMAL, max = 2},
-        {rank = GateRank.D, type = GateType.RED,    max = 1}
+    radius = 25,            -- tiles around the center
+    interval = 5 * 60 * 1000, -- milliseconds
+    gates = {
+        {rank = GateRank.E, type = GateType.NORMAL, count = 2},
+        {rank = GateRank.D, type = GateType.NORMAL, count = 1},
     }
 }
 ```
@@ -19,10 +19,10 @@ GateSpawnConfig = {
 * **center** – world position used as the spawner origin.
 * **radius** – distance from the center in which gates may appear.
 * **interval** – time in milliseconds between spawn attempts.
-* **rules** – list describing what gates can spawn. Each rule contains:
+* **gates** – list describing what gates can spawn. Each entry contains:
   * `rank` – gate rank to spawn.
   * `type` – gate type.
-  * `max`  – maximum number of gates of this rank/type that may exist.
+  * `count` – how many gates of this rank/type should exist.
 
 The server checks every `interval` and spawns new gates inside the
-`radius` when fewer than `max` are present.
+`radius` when fewer than the specified `count` are present.
