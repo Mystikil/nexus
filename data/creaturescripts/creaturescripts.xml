@@ -6,6 +6,10 @@
 	<event type="login" name="OfflineTraining" script="offline_training.lua" />
 	<event type="login" name="RegenerateStamina" script="regenerate_stamina.lua" />
 	<event type="death" name="PlayerDeath" script="player_death.lua" />
-	<event type="death" name="DropLoot" script="drop_loot.lua" />
-	<event type="extendedopcode" name="ExtendedOpcode" script="extended_opcode.lua" />
+        <event type="death" name="DropLoot" script="drop_loot.lua" />
+        <event type="extendedopcode" name="ExtendedOpcode" script="extended_opcode.lua" />
+        <event type="login" name="CustomAttributes" script="custom_attributes.lua" />
+        <event type="think" name="CustomAttributes" script="custom_attributes.lua" />
+        <event type="healthchange" name="CustomAttributes" script="custom_attributes.lua" />
+        <event type="manachange" name="CustomAttributes" script="custom_attributes.lua" />
 </creaturescripts>
