@@ -350,6 +350,14 @@ CREATE TABLE IF NOT EXISTS `player_mounts` (
   PRIMARY KEY (`player_id`,`mount_id`),
   FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+CREATE TABLE IF NOT EXISTS `player_custom_skills` (
+  `player_id` int NOT NULL,
+  `skill_id` int NOT NULL,
+  `value` int NOT NULL DEFAULT 0,
+  PRIMARY KEY (`player_id`,`skill_id`),
+  FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
 
 CREATE TABLE IF NOT EXISTS `server_config` (
   `config` varchar(50) NOT NULL,
