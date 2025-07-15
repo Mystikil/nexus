@@ -1,18 +1,11 @@
 function onLogin(player)
-	player:registerEvent("CustomAttributesThink")
-	player:registerEvent("CustomAttributesHealth")
-	player:registerEvent("CustomAttributesMana")
+        player:registerEvent("CustomAttributesThink")
+        player:registerEvent("CustomAttributesHealth")
+        player:registerEvent("CustomAttributesMana")
 
-	local weight = player:getCustomAttribute(18)
-	if weight > 0 then
-		player:setCapacity(player:getCapacity() + weight * 10)
-	end
+        CustomAttributes.recalculatePlayer(player)
 
-	if player:getCustomAttribute(28) > 0 then
-		player:setLight(215, 7)
-	end
-
-	return true
+        return true
 end
 
 function onThink(creature, interval)

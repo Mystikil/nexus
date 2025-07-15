@@ -1929,6 +1929,7 @@ void LuaScriptInterface::registerFunctions() {
 	registerEnum(L, GateType::DOUBLE);
 	registerEnumIn(L, "GateType", GateType::DOUBLE);
 
+
 	// Use with container:addItem, container:addItemEx and possibly other functions.
 	registerEnum(L, FLAG_NOLIMIT);
 	registerEnum(L, FLAG_IGNOREBLOCKITEM);
