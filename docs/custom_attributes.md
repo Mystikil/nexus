@@ -51,3 +51,14 @@ Scripts may access the definitions as follows:
 local name = CustomAttributes.getName(1) -- "Armor Penetration"
 local desc = CustomAttributes.getDescription(1)
 local group = CustomAttributes.getGroup(1)
+```
+
+### Crafting Attribute Chances
+
+Weapon crafting uses `data/scripts/crafting/attribute_config.lua` to determine
+which custom attributes may be applied to a newly created item.  The file
+defines a table `WeaponAttributeConfig` where each key is an attribute id and
+the value is the percentage chance that attribute will be rolled.
+
+Adjust the numbers in the table to make certain bonuses more or less common.
+A value of `0` disables an attribute entirely.

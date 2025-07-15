@@ -87,7 +87,16 @@ function Handler.create(npcHandler, recipes, storage)
                     player:removeMoney(recipe.cost)
                 end
                 if math.random(100) <= chance then
-                    player:addItem(recipe.result, 1)
+                    local newItem = player:addItem(recipe.result, 1)
+                    -- load attribute chance configuration and roll for bonuses
+                    dofile('data/scripts/crafting/attribute_config.lua')
+                    if newItem and WeaponAttributeConfig then
+                        for id, pct in pairs(WeaponAttributeConfig) do
+                            if math.random(100) <= pct then
+                                newItem:setCustomAttribute(id, pct)
+                            end
+                        end
+                    end
                     Crafting.addSkillPoint(player, self.storage)
                     self.npcHandler:say("Success! Here is your " .. ItemType(recipe.result):getName() .. ".", cid)
                 else
