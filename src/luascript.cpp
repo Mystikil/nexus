@@ -2726,7 +2726,10 @@ void LuaScriptInterface::registerFunctions() {
 	registerMethod(L, "Monster", "isMonster", LuaScriptInterface::luaMonsterIsMonster);
 
 	registerMethod(L, "Monster", "getId", LuaScriptInterface::luaMonsterGetId);
-	registerMethod(L, "Monster", "getType", LuaScriptInterface::luaMonsterGetType);
+        registerMethod(L, "Monster", "getType", LuaScriptInterface::luaMonsterGetType);
+
+        registerMethod(L, "Monster", "getLevel", LuaScriptInterface::luaMonsterGetLevel);
+        registerMethod(L, "Monster", "setLevel", LuaScriptInterface::luaMonsterSetLevel);
 
 	registerMethod(L, "Monster", "rename", LuaScriptInterface::luaMonsterRename);
 
@@ -10447,15 +10450,39 @@ int LuaScriptInterface::luaMonsterGetId(lua_State* L) {
 }
 
 int LuaScriptInterface::luaMonsterGetType(lua_State* L) {
-	// monster:getType()
-	const Monster* monster = lua::getUserdata<const Monster>(L, 1);
-	if (monster) {
-		lua::pushUserdata(L, monster->mType);
-		lua::setMetatable(L, -1, "MonsterType");
-	} else {
-		lua_pushnil(L);
-	}
-	return 1;
+        // monster:getType()
+        const Monster* monster = lua::getUserdata<const Monster>(L, 1);
+        if (monster) {
+                lua::pushUserdata(L, monster->mType);
+                lua::setMetatable(L, -1, "MonsterType");
+        } else {
+                lua_pushnil(L);
+        }
+        return 1;
+}
+
+int LuaScriptInterface::luaMonsterGetLevel(lua_State* L) {
+        // monster:getLevel()
+        Monster* monster = lua::getUserdata<Monster>(L, 1);
+        if (monster) {
+                lua_pushnumber(L, monster->getLevel());
+        } else {
+                lua_pushnil(L);
+        }
+        return 1;
+}
+
+int LuaScriptInterface::luaMonsterSetLevel(lua_State* L) {
+        // monster:setLevel(level)
+        Monster* monster = lua::getUserdata<Monster>(L, 1);
+        if (!monster) {
+                lua_pushnil(L);
+                return 1;
+        }
+
+        monster->setLevel(lua::getNumber<uint32_t>(L, 2));
+        lua::pushBoolean(L, true);
+        return 1;
 }
 
 int LuaScriptInterface::luaMonsterRename(lua_State* L) {

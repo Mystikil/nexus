@@ -70,15 +70,27 @@ const std::string& Monster::getName() const {
 }
 
 void Monster::setName(const std::string& name) {
-	if (getName() == name) {
-		return;
-	}
+        if (getName() == name) {
+                return;
+        }
 
-	this->name = name;
+        this->name = name;
 
 	// NOTE: Due to how client caches known creatures,
 	// it is not feasible to send creature update to everyone that has ever met it
-	g_game.updateKnownCreature(this);
+        g_game.updateKnownCreature(this);
+}
+
+uint32_t Monster::getLevel() const
+{
+        return level;
+}
+
+void Monster::setLevel(uint32_t lvl)
+{
+        level = lvl;
+        std::string levelName = mType->name + " [Lv. " + std::to_string(lvl) + "]";
+        setName(levelName);
 }
 
 const std::string& Monster::getNameDescription() const {
