@@ -5,8 +5,11 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/baseevents.cpp
 	${CMAKE_CURRENT_LIST_DIR}/bed.cpp
 	${CMAKE_CURRENT_LIST_DIR}/chat.cpp
-	${CMAKE_CURRENT_LIST_DIR}/combat.cpp
-	${CMAKE_CURRENT_LIST_DIR}/condition.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/combat.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/combat/AreaResolver.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/combat/DamageCalculator.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/combat/EffectApplier.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/condition.cpp
 	${CMAKE_CURRENT_LIST_DIR}/configmanager.cpp
 	${CMAKE_CURRENT_LIST_DIR}/connection.cpp
 	${CMAKE_CURRENT_LIST_DIR}/container.cpp
@@ -84,8 +87,11 @@ set(tfs_HDR
 	${CMAKE_CURRENT_LIST_DIR}/baseevents.h
 	${CMAKE_CURRENT_LIST_DIR}/bed.h
 	${CMAKE_CURRENT_LIST_DIR}/chat.h
-	${CMAKE_CURRENT_LIST_DIR}/combat.h
-	${CMAKE_CURRENT_LIST_DIR}/condition.h
+        ${CMAKE_CURRENT_LIST_DIR}/combat.h
+        ${CMAKE_CURRENT_LIST_DIR}/combat/AreaResolver.h
+        ${CMAKE_CURRENT_LIST_DIR}/combat/DamageCalculator.h
+        ${CMAKE_CURRENT_LIST_DIR}/combat/EffectApplier.h
+        ${CMAKE_CURRENT_LIST_DIR}/condition.h
 	${CMAKE_CURRENT_LIST_DIR}/configmanager.h
 	${CMAKE_CURRENT_LIST_DIR}/connection.h
 	${CMAKE_CURRENT_LIST_DIR}/const.h
