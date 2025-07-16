@@ -296,10 +296,30 @@ bool Spawn::spawnMonster(uint32_t spawnId, spawnBlock_t sb, bool startup/* = fal
 }
 
 bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& pos, Direction dir, bool startup/*= false*/) {
-	std::unique_ptr<Monster> monster_ptr(new Monster(mType));
-	if (!events::monster::onSpawn(monster_ptr.get(), pos, startup, false)) {
-		return false;
-	}
+       std::unique_ptr<Monster> monster_ptr(new Monster(mType));
+
+       if (ConfigManager::getBoolean(ConfigManager::MONSTER_LEVEL_SCALING)) {
+               uint32_t level = 1;
+               const auto& rules = ConfigManager::getMonsterLevelRules();
+               for (const auto& rule : rules) {
+                       if (pos.getZ() >= rule.minZ && pos.getZ() <= rule.maxZ) {
+                               level += (pos.getZ() - rule.minZ) * rule.levelsPerFloor;
+                               break;
+                       }
+               }
+
+               monster_ptr->setLevel(level);
+
+               float speedBonus = ConfigManager::getFloat(ConfigManager::MONSTER_BONUS_SPEED);
+               if (speedBonus > 0.f) {
+                       uint32_t base = monster_ptr->getBaseSpeed();
+                       monster_ptr->setBaseSpeed(static_cast<uint32_t>(base + base * speedBonus * level));
+               }
+       }
+
+       if (!events::monster::onSpawn(monster_ptr.get(), pos, startup, false)) {
+               return false;
+       }
 
 	if (startup) {
 		//No need to send out events to the surrounding since there is no one out there to listen!
