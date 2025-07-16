@@ -1387,9 +1387,11 @@ class LuaEnvironment : public LuaScriptInterface {
 		Combat_ptr createCombatObject(LuaScriptInterface* interface);
 		void clearCombatObjects(LuaScriptInterface* interface);
 
-		AreaCombat* getAreaObject(uint32_t id) const;
-		uint32_t createAreaObject(LuaScriptInterface* interface);
-		void clearAreaObjects(LuaScriptInterface* interface);
+                AreaCombat* getAreaObject(uint32_t id) const;
+                uint32_t createAreaObject(LuaScriptInterface* interface);
+                void clearAreaObjects(LuaScriptInterface* interface);
+
+               void ensureGateEnums();
 
 	private:
 		void executeTimerEvent(uint32_t eventIndex);

@@ -17347,10 +17347,10 @@ uint32_t LuaEnvironment::createAreaObject(LuaScriptInterface* interface) {
 }
 
 void LuaEnvironment::clearAreaObjects(LuaScriptInterface* interface) {
-	auto it = areaIdMap.find(interface);
-	if (it == areaIdMap.end()) {
-		return;
-	}
+        auto it = areaIdMap.find(interface);
+        if (it == areaIdMap.end()) {
+                return;
+        }
 
 	for (uint32_t id : it->second) {
 		auto itt = areaMap.find(id);
@@ -17359,7 +17359,27 @@ void LuaEnvironment::clearAreaObjects(LuaScriptInterface* interface) {
 			areaMap.erase(itt);
 		}
 	}
-	it->second.clear();
+        it->second.clear();
+}
+
+void LuaEnvironment::ensureGateEnums()
+{
+       lua_State* L = getLuaState();
+
+       // (Re)create enum tables if they've been clobbered by scripts
+       registerTable(L, "GateRank");
+       registerTable(L, "GateType");
+
+       registerVariable(L, "GateRank", "E", static_cast<lua_Number>(GateRank::E));
+       registerVariable(L, "GateRank", "D", static_cast<lua_Number>(GateRank::D));
+       registerVariable(L, "GateRank", "C", static_cast<lua_Number>(GateRank::C));
+       registerVariable(L, "GateRank", "B", static_cast<lua_Number>(GateRank::B));
+       registerVariable(L, "GateRank", "A", static_cast<lua_Number>(GateRank::A));
+       registerVariable(L, "GateRank", "S", static_cast<lua_Number>(GateRank::S));
+
+       registerVariable(L, "GateType", "NORMAL", static_cast<lua_Number>(GateType::NORMAL));
+       registerVariable(L, "GateType", "RED", static_cast<lua_Number>(GateType::RED));
+       registerVariable(L, "GateType", "DOUBLE", static_cast<lua_Number>(GateType::DOUBLE));
 }
 
 void LuaEnvironment::executeTimerEvent(uint32_t eventIndex) {
