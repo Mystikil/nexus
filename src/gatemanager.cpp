@@ -122,6 +122,7 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
 
 void GateManager::loadSpawnConfig(const std::string& file)
 {
+       // Make sure enum tables are available before executing the config
        g_luaEnvironment.ensureGateEnums();
 
        lua_State* L = g_luaEnvironment.getLuaState();

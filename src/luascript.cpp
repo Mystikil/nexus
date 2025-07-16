@@ -17250,8 +17250,11 @@ bool LuaEnvironment::initState() {
 		return false;
 	}
 
-	luaL_openlibs(L);
-	registerFunctions();
+        luaL_openlibs(L);
+        registerFunctions();
+
+        // ensure custom enums like GateRank and GateType are present
+        ensureGateEnums();
 
 	runningEventId = EVENT_ID_USER;
 	return true;
