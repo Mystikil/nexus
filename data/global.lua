@@ -237,5 +237,6 @@ function checkDuplicateStorageKeys(varName)
 end
 CustomSkills.load()
 CustomAttributes.load()
+dofile('data/scripts/plugins/combat_hooks.lua')
 
 

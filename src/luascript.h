@@ -282,7 +282,10 @@ class LuaScriptInterface {
 		static int luaDBTransactionCreate(lua_State* L);
 		static int luaDBTransactionDelete(lua_State* L);
 		static int luaDBTransactionBegin(lua_State* L);
-		static int luaDBTransactionCommit(lua_State* L);
+               static int luaDBTransactionCommit(lua_State* L);
+
+                // EventManager
+                static int luaEventManagerRegister(lua_State* L);
 
 		// Game
 		static int luaGameLoadMap(lua_State* L);

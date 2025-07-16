@@ -21,7 +21,8 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/databasetasks.cpp
 	${CMAKE_CURRENT_LIST_DIR}/depotchest.cpp
 	${CMAKE_CURRENT_LIST_DIR}/depotlocker.cpp
-	${CMAKE_CURRENT_LIST_DIR}/events.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/events.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/eventmanager.cpp
 	${CMAKE_CURRENT_LIST_DIR}/fileloader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/game.cpp
 	${CMAKE_CURRENT_LIST_DIR}/globalevent.cpp
@@ -168,8 +169,9 @@ set(tfs_HDR
 	${CMAKE_CURRENT_LIST_DIR}/trashholder.h
 	${CMAKE_CURRENT_LIST_DIR}/vocation.h
 	${CMAKE_CURRENT_LIST_DIR}/weapons.h
-	${CMAKE_CURRENT_LIST_DIR}/wildcardtree.h
-	${CMAKE_CURRENT_LIST_DIR}/xtea.h
+        ${CMAKE_CURRENT_LIST_DIR}/wildcardtree.h
+        ${CMAKE_CURRENT_LIST_DIR}/xtea.h
+        ${CMAKE_CURRENT_LIST_DIR}/eventmanager.h
 )
 
 set(tfs_MAIN ${CMAKE_CURRENT_LIST_DIR}/main.cpp PARENT_SCOPE)

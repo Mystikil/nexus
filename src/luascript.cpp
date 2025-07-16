@@ -12,6 +12,7 @@
 #include "databasetasks.h"
 #include "depotchest.h"
 #include "events.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "globalevent.h"
 #include "housetile.h"
@@ -2184,9 +2185,13 @@ void LuaScriptInterface::registerFunctions() {
 
 	registerMethod(L, "DBTransaction", "begin", LuaScriptInterface::luaDBTransactionBegin);
 	registerMethod(L, "DBTransaction", "commit", LuaScriptInterface::luaDBTransactionCommit);
-	registerMethod(L, "DBTransaction", "rollback", LuaScriptInterface::luaDBTransactionDelete);
+       registerMethod(L, "DBTransaction", "rollback", LuaScriptInterface::luaDBTransactionDelete);
 
-	// Game
+        // EventManager
+        registerTable(L, "EventManager");
+        registerMethod(L, "EventManager", "register", LuaScriptInterface::luaEventManagerRegister);
+
+       // Game
 	registerTable(L, "Game");
 
 	registerMethod(L, "Game", "loadMap", LuaScriptInterface::luaGameLoadMap);
@@ -4284,12 +4289,30 @@ int LuaScriptInterface::luaDBTransactionCommit(lua_State* L) {
 }
 
 int LuaScriptInterface::luaDBTransactionDelete(lua_State* L) {
-	DBTransaction** transactionPtr = lua::getRawUserdata<DBTransaction>(L, 1);
-	if (transactionPtr && *transactionPtr) {
-		delete *transactionPtr;
-		*transactionPtr = nullptr;
-	}
-	return 0;
+        DBTransaction** transactionPtr = lua::getRawUserdata<DBTransaction>(L, 1);
+        if (transactionPtr && *transactionPtr) {
+                delete *transactionPtr;
+                *transactionPtr = nullptr;
+        }
+        return 0;
+}
+
+int LuaScriptInterface::luaEventManagerRegister(lua_State* L) {
+        // EventManager.register(name, callback)
+        const std::string& name = lua::getString(L, 1);
+        if (!lua_isfunction(L, 2)) {
+                lua::pushBoolean(L, false);
+                return 1;
+        }
+
+        lua_pushvalue(L, 2);
+        int function = luaL_ref(L, LUA_REGISTRYINDEX);
+
+        ScriptEnvironment* env = lua::getScriptEnv();
+        EventManager::registerEvent(name, env->getScriptInterface(), env->getScriptId(), function);
+
+        lua::pushBoolean(L, true);
+        return 1;
 }
 
 // Game

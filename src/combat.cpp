@@ -7,6 +7,7 @@
 
 #include "configmanager.h"
 #include "events.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "matrixarea.h"
 #include "spectators.h"
@@ -728,11 +729,11 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 
 	Player* casterPlayer = caster ? caster->getPlayer() : nullptr;
 
-	bool success = false;
-	if (damage.primary.type != COMBAT_MANADRAIN) {
-		if (g_game.combatBlockHit(damage, caster, target, params.blockedByShield, params.blockedByArmor, params.itemId != 0, params.ignoreResistances)) {
-			return;
-		}
+        bool success = false;
+        if (damage.primary.type != COMBAT_MANADRAIN) {
+                if (g_game.combatBlockHit(damage, caster, target, params.blockedByShield, params.blockedByArmor, params.itemId != 0, params.ignoreResistances)) {
+                        return;
+                }
 
 		if (casterPlayer) {
 			Player* targetPlayer = target ? target->getPlayer() : nullptr;
@@ -752,10 +753,35 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 			}
 		}
 
-		success = g_game.combatChangeHealth(caster, target, damage);
-	} else {
-		success = g_game.combatChangeMana(caster, target, damage);
-	}
+                EventManager::emit("combat:preDamage", [&](lua_State* L) {
+                        if (caster) {
+                                lua::pushUserdata(L, caster);
+                                lua::setCreatureMetatable(L, -1, caster);
+                        } else {
+                                lua_pushnil(L);
+                        }
+                        lua::pushUserdata(L, target);
+                        lua::setCreatureMetatable(L, -1, target);
+                        lua::pushCombatDamage(L, damage);
+                        return 7;
+                });
+
+                success = g_game.combatChangeHealth(caster, target, damage);
+        } else {
+                EventManager::emit("combat:preDamage", [&](lua_State* L) {
+                        if (caster) {
+                                lua::pushUserdata(L, caster);
+                                lua::setCreatureMetatable(L, -1, caster);
+                        } else {
+                                lua_pushnil(L);
+                        }
+                        lua::pushUserdata(L, target);
+                        lua::setCreatureMetatable(L, -1, target);
+                        lua::pushCombatDamage(L, damage);
+                        return 7;
+                });
+                success = g_game.combatChangeMana(caster, target, damage);
+        }
 
 	if (success) {
 		if (damage.blockType == BLOCK_NONE || damage.blockType == BLOCK_ARMOR) {
@@ -804,12 +830,25 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 			}
 		}
 
-		if (params.dispelType == CONDITION_PARALYZE) {
-			target->removeCondition(CONDITION_PARALYZE);
-		} else {
-			target->removeCombatCondition(params.dispelType);
-		}
-	}
+                if (params.dispelType == CONDITION_PARALYZE) {
+                        target->removeCondition(CONDITION_PARALYZE);
+                } else {
+                        target->removeCombatCondition(params.dispelType);
+                }
+
+                EventManager::emit("combat:postDamage", [&](lua_State* L) {
+                        if (caster) {
+                                lua::pushUserdata(L, caster);
+                                lua::setCreatureMetatable(L, -1, caster);
+                        } else {
+                                lua_pushnil(L);
+                        }
+                        lua::pushUserdata(L, target);
+                        lua::setCreatureMetatable(L, -1, target);
+                        lua::pushCombatDamage(L, damage);
+                        return 7;
+                });
+        }
 
 	if (params.targetCallback) {
 		params.targetCallback->onTargetCombat(caster, target);
@@ -884,9 +923,35 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
         for (Creature* creature : toDamageCreatures) {
                 CombatDamage damageCopy = damage; // we cannot avoid copying here, because we don't know if it's player combat or not, so we can't modify the initial damage.
 
+                EventManager::emit("combat:preDamage", [&](lua_State* L) {
+                        if (caster) {
+                                lua::pushUserdata(L, caster);
+                                lua::setCreatureMetatable(L, -1, caster);
+                        } else {
+                                lua_pushnil(L);
+                        }
+                        lua::pushUserdata(L, creature);
+                        lua::setCreatureMetatable(L, -1, creature);
+                        lua::pushCombatDamage(L, damageCopy);
+                        return 7;
+                });
+
                 bool success = damageCalc.applyDamage(caster, creature, damageCopy, params, criticalPrimary, criticalSecondary);
 
                 if (success) {
+                        EventManager::emit("combat:postDamage", [&](lua_State* L) {
+                                if (caster) {
+                                        lua::pushUserdata(L, caster);
+                                        lua::setCreatureMetatable(L, -1, caster);
+                                } else {
+                                        lua_pushnil(L);
+                                }
+                                lua::pushUserdata(L, creature);
+                                lua::setCreatureMetatable(L, -1, creature);
+                                lua::pushCombatDamage(L, damageCopy);
+                                return 7;
+                        });
+
                         int32_t totalDamage = std::abs(damageCopy.primary.value + damageCopy.secondary.value);
                         effectApplier.applyAfterHit(caster, creature, damageCopy, params, casterPlayer, totalDamage, toDamageCreatures.size());
                 }
