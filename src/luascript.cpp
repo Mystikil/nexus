@@ -191,14 +191,21 @@ namespace {
 		lua_setglobal(L, functionName.data());
 	}
 
-	void registerVariable(lua_State* L, std::string_view tableName, std::string_view name, lua_Number value) {
-		// tableName.name = value
-		lua_getglobal(L, tableName.data());
-		setField(L, name.data(), value);
+       void registerVariable(lua_State* L, std::string_view tableName, std::string_view name, lua_Number value) {
+               // tableName.name = value
+               lua_getglobal(L, tableName.data());
+               if (!lua_istable(L, -1)) {
+                       // ensure table exists to avoid panic when registering enums
+                       lua_pop(L, 1);
+                       lua_newtable(L);
+                       lua_pushvalue(L, -1);
+                       lua_setglobal(L, tableName.data());
+               }
+               setField(L, name.data(), value);
 
-		// pop tableName
-		lua_pop(L, 1);
-	}
+               // pop tableName
+               lua_pop(L, 1);
+       }
 
 	void registerGlobalVariable(lua_State* L, std::string_view name, lua_Number value) {
 		// _G[name] = value
