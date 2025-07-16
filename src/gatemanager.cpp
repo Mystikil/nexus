@@ -122,12 +122,14 @@ Gate* GateManager::spawnGate(const Position& pos, GateRank rank, GateType type)
 
 void GateManager::loadSpawnConfig(const std::string& file)
 {
-        lua_State* L = g_luaEnvironment.getLuaState();
-        if (luaL_dofile(L, file.c_str()) != 0) {
-                std::cout << "[Error - GateManager::loadSpawnConfig] " << lua_tostring(L, -1) << std::endl;
-                lua_pop(L, 1);
-                return;
-        }
+       lua_State* L = g_luaEnvironment.getLuaState();
+       // use the script interface loader so any runtime errors are
+       // properly routed through the error handler instead of triggering
+       // a panic inside luaL_dofile
+       if (g_luaEnvironment.loadFile(file) != 0) {
+               std::cout << "[Error - GateManager::loadSpawnConfig] " << g_luaEnvironment.getLastLuaError() << std::endl;
+               return;
+       }
 
         lua_getglobal(L, "GateSpawnConfig");
         if (!lua_istable(L, -1)) {
