@@ -23,12 +23,14 @@ extern Game g_game;
 
 namespace {
 
-	std::array<std::string, ConfigManager::LAST_STRING_CONFIG> string = {};
-	std::array<int32_t, ConfigManager::LAST_INTEGER_CONFIG> integer = {};
-	std::array<bool, ConfigManager::LAST_BOOLEAN_CONFIG> boolean = {};
+        std::array<std::string, ConfigManager::LAST_STRING_CONFIG> string = {};
+        std::array<int32_t, ConfigManager::LAST_INTEGER_CONFIG> integer = {};
+        std::array<bool, ConfigManager::LAST_BOOLEAN_CONFIG> boolean = {};
+        std::array<float, ConfigManager::LAST_FLOAT_CONFIG> floats = {};
 
 	using ExperienceStages = std::vector<std::tuple<uint32_t, uint32_t, float>>;
-	ExperienceStages expStages;
+        ExperienceStages expStages;
+        std::vector<ConfigManager::MonsterLevelRule> monsterLevelRules;
 
 	bool loaded = false;
 
@@ -57,13 +59,13 @@ namespace {
 		return val;
 	}
 
-	bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultValue) {
-		lua_getglobal(L, identifier);
-		if (!lua_isboolean(L, -1)) {
-			if (!lua_isstring(L, -1)) {
-				lua_pop(L, 1);
-				return defaultValue;
-			}
+        bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultValue) {
+                lua_getglobal(L, identifier);
+                if (!lua_isboolean(L, -1)) {
+                        if (!lua_isstring(L, -1)) {
+                                lua_pop(L, 1);
+                                return defaultValue;
+                        }
 
 			size_t len = lua_strlen(L, -1);
 			std::string ret(lua_tostring(L, -1), len);
@@ -71,10 +73,22 @@ namespace {
 			return booleanString(ret);
 		}
 
-		int val = lua_toboolean(L, -1);
-		lua_pop(L, 1);
-		return val != 0;
-	}
+                int val = lua_toboolean(L, -1);
+                lua_pop(L, 1);
+                return val != 0;
+        }
+
+        float getGlobalFloat(lua_State* L, const char* identifier, float defaultValue = 0.f) {
+                lua_getglobal(L, identifier);
+                if (!lua_isnumber(L, -1)) {
+                        lua_pop(L, 1);
+                        return defaultValue;
+                }
+
+                float val = lua_tonumber(L, -1);
+                lua_pop(L, 1);
+                return val;
+        }
 
 	ExperienceStages loadLuaStages(lua_State* L) {
 		ExperienceStages stages;
@@ -99,9 +113,9 @@ namespace {
 		return stages;
 	}
 
-	ExperienceStages loadXMLStages() {
-		pugi::xml_document doc;
-		pugi::xml_parse_result result = doc.load_file("data/XML/stages.xml");
+        ExperienceStages loadXMLStages() {
+                pugi::xml_document doc;
+                pugi::xml_parse_result result = doc.load_file("data/XML/stages.xml");
 		if (!result) {
 			printXMLError("Error - loadXMLStages", "data/XML/stages.xml", result);
 			return {};
@@ -132,9 +146,36 @@ namespace {
 			}
 		}
 
-		std::sort(stages.begin(), stages.end());
-		return stages;
-	}
+                std::sort(stages.begin(), stages.end());
+                return stages;
+        }
+
+        std::vector<ConfigManager::MonsterLevelRule> loadMonsterLevelRules(lua_State* L) {
+                std::vector<ConfigManager::MonsterLevelRule> rules;
+
+                lua_getglobal(L, "monsterLevelRules");
+                if (!lua_istable(L, -1)) {
+                        lua_pop(L, 1);
+                        return rules;
+                }
+
+                lua_pushnil(L);
+                while (lua_next(L, -2) != 0) {
+                        const auto tableIndex = lua_gettop(L);
+                        ConfigManager::MonsterLevelRule rule;
+                        rule.minZ = lua::getField<int32_t>(L, tableIndex, "minZ", 0);
+                        rule.maxZ = lua::getField<int32_t>(L, tableIndex, "maxZ", static_cast<int32_t>(rule.minZ));
+                        rule.levelsPerFloor = lua::getField<int32_t>(L, tableIndex, "levelsPerFloor", 1);
+                        rules.push_back(rule);
+                        lua_pop(L, 4);
+                }
+                lua_pop(L, 1);
+
+                std::sort(rules.begin(), rules.end(), [](const auto& a, const auto& b) {
+                        return a.minZ < b.minZ;
+                });
+                return rules;
+        }
 
 }
 
@@ -225,8 +266,9 @@ bool ConfigManager::load() {
 	boolean[ONLY_INVITED_CAN_MOVE_HOUSE_ITEMS] = getGlobalBoolean(L, "onlyInvitedCanMoveHouseItems", true);
 	boolean[REMOVE_ON_DESPAWN] = getGlobalBoolean(L, "removeOnDespawn", true);
 	boolean[PLAYER_CONSOLE_LOGS] = getGlobalBoolean(L, "showPlayerLogInConsole", true);
-	boolean[CHECK_DUPLICATE_STORAGE_KEYS] = getGlobalBoolean(L, "checkDuplicateStorageKeys", false);
-	boolean[MONSTER_OVERSPAWN] = getGlobalBoolean(L, "monsterOverspawn", false);
+        boolean[CHECK_DUPLICATE_STORAGE_KEYS] = getGlobalBoolean(L, "checkDuplicateStorageKeys", false);
+        boolean[MONSTER_OVERSPAWN] = getGlobalBoolean(L, "monsterOverspawn", false);
+        boolean[MONSTER_LEVEL_SCALING] = getGlobalBoolean(L, "enableMonsterLevelScaling", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -235,7 +277,14 @@ bool ConfigManager::load() {
 	string[URL] = getGlobalString(L, "url", "");
 	string[LOCATION] = getGlobalString(L, "location", "");
 	string[MOTD] = getGlobalString(L, "motd", "");
-	string[WORLD_TYPE] = getGlobalString(L, "worldType", "pvp");
+        string[WORLD_TYPE] = getGlobalString(L, "worldType", "pvp");
+
+        floats[MONSTER_BONUS_HEALTH] = getGlobalFloat(L, "monsterBonusHealth", 0.f);
+        floats[MONSTER_BONUS_DAMAGE] = getGlobalFloat(L, "monsterBonusDamage", 0.f);
+        floats[MONSTER_BONUS_SPEED] = getGlobalFloat(L, "monsterBonusSpeed", 0.f);
+        floats[MONSTER_BONUS_LOOT]   = getGlobalFloat(L, "monsterBonusLoot", 0.f);
+
+        monsterLevelRules = loadMonsterLevelRules(L);
 
 	integer[MAX_PLAYERS] = getGlobalNumber(L, "maxPlayers");
 	integer[PZ_LOCKED] = getGlobalNumber(L, "pzLocked", 60000);
@@ -317,11 +366,19 @@ int32_t ConfigManager::getNumber(integer_config_t what) {
 }
 
 bool ConfigManager::getBoolean(boolean_config_t what) {
-	if (what >= LAST_BOOLEAN_CONFIG) {
-		std::cout << "[Warning - ConfigManager::getBoolean] Accessing invalid index: " << what << std::endl;
-		return false;
-	}
-	return boolean[what];
+        if (what >= LAST_BOOLEAN_CONFIG) {
+                std::cout << "[Warning - ConfigManager::getBoolean] Accessing invalid index: " << what << std::endl;
+                return false;
+        }
+        return boolean[what];
+}
+
+float ConfigManager::getFloat(float_config_t what) {
+        if (what >= LAST_FLOAT_CONFIG) {
+                std::cout << "[Warning - ConfigManager::getFloat] Accessing invalid index: " << what << std::endl;
+                return 0.f;
+        }
+        return floats[what];
 }
 
 float ConfigManager::getExperienceStage(uint32_t level) {
@@ -334,7 +391,11 @@ float ConfigManager::getExperienceStage(uint32_t level) {
 		return getNumber(ConfigManager::RATE_EXPERIENCE);
 	}
 
-	return std::get<2>(*it);
+        return std::get<2>(*it);
+}
+
+const std::vector<ConfigManager::MonsterLevelRule>& ConfigManager::getMonsterLevelRules() {
+        return monsterLevelRules;
 }
 
 bool ConfigManager::setString(string_config_t what, std::string_view value) {
