@@ -93,6 +93,19 @@ void Monster::setLevel(uint32_t lvl)
         setName(levelName);
 }
 
+void Monster::setMaxHealth(int32_t newMax)
+{
+       healthMax = newMax;
+       health = std::min<int32_t>(health, healthMax);
+       g_game.addCreatureHealth(this);
+}
+
+void Monster::setHealth(int32_t newHealth)
+{
+       health = std::min<int32_t>(newHealth, healthMax);
+       g_game.addCreatureHealth(this);
+}
+
 const std::string& Monster::getNameDescription() const {
 	if (nameDescription.empty()) {
 		return mType->nameDescription;
@@ -838,8 +851,14 @@ void Monster::doAttacking(uint32_t interval) {
 					lookUpdated = true;
 				}
 
-				minCombatValue = spellBlock.minCombatValue;
-				maxCombatValue = spellBlock.maxCombatValue;
+                               minCombatValue = spellBlock.minCombatValue;
+                               maxCombatValue = spellBlock.maxCombatValue;
+
+                               float dmgBonus = ConfigManager::getFloat(ConfigManager::MONSTER_BONUS_DAMAGE);
+                               if (dmgBonus > 0.f && level > 1) {
+                                       minCombatValue = static_cast<int32_t>(minCombatValue + minCombatValue * dmgBonus * level);
+                                       maxCombatValue = static_cast<int32_t>(maxCombatValue + maxCombatValue * dmgBonus * level);
+                               }
 				spellBlock.spell->castSpell(this, attackedCreature);
 
 				if (spellBlock.isMelee) {
@@ -969,10 +988,16 @@ void Monster::onThinkDefense(uint32_t interval) {
 		}
 
 		if ((spellBlock.chance >= static_cast<uint32_t>(uniform_random(1, 100)))) {
-			minCombatValue = spellBlock.minCombatValue;
-			maxCombatValue = spellBlock.maxCombatValue;
-			spellBlock.spell->castSpell(this, this);
-		}
+                       minCombatValue = spellBlock.minCombatValue;
+                       maxCombatValue = spellBlock.maxCombatValue;
+
+                       float dmgBonus = ConfigManager::getFloat(ConfigManager::MONSTER_BONUS_DAMAGE);
+                       if (dmgBonus > 0.f && level > 1) {
+                               minCombatValue = static_cast<int32_t>(minCombatValue + minCombatValue * dmgBonus * level);
+                               maxCombatValue = static_cast<int32_t>(maxCombatValue + maxCombatValue * dmgBonus * level);
+                       }
+                       spellBlock.spell->castSpell(this, this);
+               }
 	}
 
 	if (!isSummon() && summons.size() < mType->info.maxSummons && hasFollowPath) {

@@ -301,14 +301,25 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
        if (ConfigManager::getBoolean(ConfigManager::MONSTER_LEVEL_SCALING)) {
                uint32_t level = 1;
                const auto& rules = ConfigManager::getMonsterLevelRules();
-               for (const auto& rule : rules) {
-                       if (pos.getZ() >= rule.minZ && pos.getZ() <= rule.maxZ) {
-                               level += (pos.getZ() - rule.minZ) * rule.levelsPerFloor;
-                               break;
+
+               for (int32_t floor = 1; floor <= pos.getZ(); ++floor) {
+                       for (const auto& rule : rules) {
+                               if (floor >= rule.minZ && floor <= rule.maxZ) {
+                                       level += rule.levelsPerFloor;
+                                       break;
+                               }
                        }
                }
 
                monster_ptr->setLevel(level);
+
+               float bonusHealth = ConfigManager::getFloat(ConfigManager::MONSTER_BONUS_HEALTH);
+               if (bonusHealth > 0.f && level > 1) {
+                       int32_t base = monster_ptr->getMaxHealth();
+                       int32_t newMax = static_cast<int32_t>(base + base * bonusHealth * level);
+                       monster_ptr->setMaxHealth(newMax);
+                       monster_ptr->setHealth(newMax);
+               }
 
                float speedBonus = ConfigManager::getFloat(ConfigManager::MONSTER_BONUS_SPEED);
                if (speedBonus > 0.f) {
