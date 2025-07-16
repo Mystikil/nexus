@@ -1,0 +1,116 @@
+{
+  "Invisibility Effects": [
+    "invisible",
+    "djinn cancel invisibility"
+  ],
+  "Skill Reducers": [
+    "fury skill reducer",
+    "betrayed wraith skill reducer",
+    "werewolf skill reducer",
+    "stampor skill reducer",
+    "forest fury skill reducer",
+    "deepling spellsinger skill reducer",
+    "barbarian brutetamer skill reducer",
+    "cliff strider skill reducer",
+    "enslaved dwarf skill reducer 1",
+    "silencer skill reducer",
+    "ice golem skill reducer",
+    "feversleep skill reducer",
+    "dipthrah skill reducer",
+    "dark torturer skill reducer",
+    "diabolic imp skill reducer",
+    "warlock skill reducer",
+    "war golem skill reducer",
+    "shock head skill reducer 1",
+    "pirate corsair skill reducer",
+    "shock head skill reducer 2",
+    "enslaved dwarf skill reducer 2",
+    "demon outcast skill reducer"
+  ],
+  "Poison Attacks": [
+    "poisonfield",
+    "poisoncondition",
+    "poison"
+  ],
+  "Drown Attacks": [
+    "spectre drown",
+    "sea serpent drown",
+    "phantasm drown",
+    "young sea serpent drown",
+    "drown",
+    "souleater drown",
+    "choking fear drown",
+    "drowncondition"
+  ],
+  "Curses": [
+    "ghastly dragon curse",
+    "lizard magistratus curse",
+    "draken abomination curse",
+    "death blob curse",
+    "mutated bat curse",
+    "blightwalker curse",
+    "cursecondition",
+    "undead dragon curse",
+    "lancer beetle curse"
+  ],
+  "Electrify": [
+    "cliff strider electrify",
+    "war golem electrify",
+    "djinn electrify",
+    "energy elemental electrify",
+    "quara constrictor electrify",
+    "massive energy elemental electrify"
+  ],
+  "Other": [
+    "freezecondition",
+    "outfit",
+    "earth",
+    "holy",
+    "physical",
+    "quara constrictor freeze",
+    "effect",
+    "terra wave"
+  ],
+  "Melee": [
+    "melee"
+  ],
+  "Fire Attacks": [
+    "hellspawn soulfire",
+    "magma crawler soulfire",
+    "monster soulfire",
+    "firefield",
+    "vulcongra soulfire",
+    "lava golem soulfire",
+    "hellfire fighter soulfire",
+    "massive fire elemental soulfire",
+    "firecondition",
+    "fire"
+  ],
+  "Mana Drain Attacks": [
+    "manadrain"
+  ],
+  "Bleed Attacks": [
+    "bleedcondition"
+  ],
+  "Energy Attacks": [
+    "energyfield",
+    "energycondition",
+    "energy strike",
+    "energy"
+  ],
+  "Lifedrain Attacks": [
+    "lifedrain"
+  ],
+  "Death Attacks": [
+    "death"
+  ],
+  "Drunk Types": [
+    "drunk"
+  ],
+  "Ice Attacks": [
+    "ice"
+  ],
+  "Speed Modifiers": [
+    "speed"
+  ]
+}
