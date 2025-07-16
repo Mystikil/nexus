@@ -1932,10 +1932,43 @@ void Monster::updateLookDirection() {
 	g_game.internalCreatureTurn(this, lookDirection);
 }
 
+namespace {
+       void applyBonusLoot(LootBlock& block, uint32_t level, float bonus)
+       {
+               if (bonus > 0.f && level > 1) {
+                       int extra = static_cast<int>(block.countmax * (level * bonus));
+                       if (extra > 0) {
+                               block.countmax += static_cast<uint32_t>(extra);
+                       }
+               }
+
+               for (LootBlock& child : block.childLoot) {
+                       applyBonusLoot(child, level, bonus);
+               }
+       }
+}
+
 void Monster::dropLoot(Container* corpse, Creature*) {
-	if (corpse && lootDrop) {
-		events::monster::onDropLoot(this, corpse);
-	}
+        if (!corpse || !lootDrop) {
+                return;
+        }
+
+        std::vector<LootBlock> originalLoot;
+        if (ConfigManager::getBoolean(ConfigManager::MONSTER_LEVEL_SCALING)) {
+                float bonusLoot = ConfigManager::getFloat(ConfigManager::MONSTER_BONUS_LOOT);
+                if (bonusLoot > 0.f && level > 1) {
+                        originalLoot = mType->info.lootItems;
+                        for (LootBlock& block : mType->info.lootItems) {
+                                applyBonusLoot(block, level, bonusLoot);
+                        }
+                }
+        }
+
+        events::monster::onDropLoot(this, corpse);
+
+        if (!originalLoot.empty()) {
+                mType->info.lootItems = std::move(originalLoot);
+        }
 }
 
 void Monster::setNormalCreatureLight() {
