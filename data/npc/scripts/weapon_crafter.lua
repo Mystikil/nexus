@@ -4,6 +4,7 @@ NpcSystem.parseParameters(npcHandler)
 
 local Handler = dofile('data/scripts/crafting/handler.lua')
 dofile('data/scripts/crafting/recipes/weapons.lua')
+dofile('data/scripts/crafting/attribute_config.lua')
 
 local crafting = Handler.create(npcHandler, weaponRecipes, PlayerStorageKeys.weaponsmithSkill)
 

@@ -1,9 +1,17 @@
 local event = Event()
 
 event.onLook = function(self, thing, position, distance, description)
-	local description = "You see " .. thing:getDescription(distance)
-	if self:getGroup():getAccess() then
-		if thing:isItem() then
+        local description = "You see " .. thing:getDescription(distance)
+        if thing:isItem() then
+                for id, _ in pairs(CustomAttributes.attributes) do
+                        local value = thing:getCustomAttribute(id)
+                        if value ~= nil then
+                                description = string.format("%s\n%s: %s", description, CustomAttributes.getName(id), tostring(value))
+                        end
+                end
+        end
+        if self:getGroup():getAccess() then
+                if thing:isItem() then
 			description = string.format("%s\nItem ID: %d", description, thing:getId())
 
 			local actionId = thing:getActionId()

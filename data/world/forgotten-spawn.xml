@@ -1387,9 +1387,6 @@
 	<spawn centerx="258" centery="680" centerz="14" radius="5">
 		<monster name="Demon" x="0" y="-1" z="14" spawntime="60" />
 	</spawn>
-        <spawn centerx="240" centery="550" centerz="5" radius="1">
-                <npc name="Weaponsmith" x="0" y="0" z="5" spawntime="60" direction="2" />
-        </spawn>
 	<spawn centerx="271" centery="665" centerz="15" radius="5">
 		<monster name="Demon" x="-2" y="-2" z="15" spawntime="60" />
 		<monster name="Demon" x="2" y="1" z="15" spawntime="60" />

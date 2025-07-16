@@ -9,7 +9,7 @@
         <event type="death" name="DropLoot" script="drop_loot.lua" />
         <event type="extendedopcode" name="ExtendedOpcode" script="extended_opcode.lua" />
         <event type="login" name="CustomAttributes" script="custom_attributes.lua" />
-        <event type="think" name="CustomAttributes" script="custom_attributes.lua" />
-        <event type="healthchange" name="CustomAttributes" script="custom_attributes.lua" />
-        <event type="manachange" name="CustomAttributes" script="custom_attributes.lua" />
+        <event type="think" name="CustomAttributesThink" script="custom_attributes.lua" />
+        <event type="healthchange" name="CustomAttributesHealth" script="custom_attributes.lua" />
+        <event type="manachange" name="CustomAttributesMana" script="custom_attributes.lua" />
 </creaturescripts>
