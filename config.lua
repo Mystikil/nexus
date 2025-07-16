@@ -159,6 +159,19 @@ removeOnDespawn = true
 walkToSpawnRadius = 15
 monsterOverspawn = false
 
+-- Monster Level Scaling
+enableMonsterLevelScaling = true
+monsterLevelRules = {
+  { minZ = 0, maxZ = 6,  levelsPerFloor = 5 },
+  { minZ = 7, maxZ = 7,  levelsPerFloor = 1 },
+  { minZ = 8, maxZ = 14, levelsPerFloor = 10 },
+  { minZ = 15, maxZ = 20, levelsPerFloor = 15 }
+}
+monsterBonusHealth = 0.5
+monsterBonusDamage = 0.02
+monsterBonusSpeed  = 0.02
+monsterBonusLoot   = 0.04
+
 -- Stamina
 staminaSystem = true
 timeToRegenMinuteStamina = 3 * 60
