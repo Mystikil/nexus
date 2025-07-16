@@ -56,7 +56,10 @@ class Monster final : public Creature {
                 void setName(const std::string& name);
 
                 uint32_t getLevel() const;
-                void setLevel(uint32_t lvl);
+               void setLevel(uint32_t lvl);
+
+               void setMaxHealth(int32_t newMax);
+               void setHealth(int32_t newHealth);
 
 		const std::string& getNameDescription() const override;
 		void setNameDescription(const std::string& nameDescription) {
