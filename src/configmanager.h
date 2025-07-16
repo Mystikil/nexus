@@ -6,7 +6,7 @@
 
 namespace ConfigManager {
 
-	enum boolean_config_t {
+        enum boolean_config_t {
 		ALLOW_CHANGEOUTFIT,
 		ONE_PLAYER_ON_ACCOUNT,
 		AIMBOT_HOTKEY_ENABLED,
@@ -45,10 +45,11 @@ namespace ConfigManager {
 		REMOVE_ON_DESPAWN,
 		PLAYER_CONSOLE_LOGS,
 		CHECK_DUPLICATE_STORAGE_KEYS,
-		MONSTER_OVERSPAWN,
+                MONSTER_OVERSPAWN,
+                MONSTER_LEVEL_SCALING,
 
-		LAST_BOOLEAN_CONFIG /* this must be the last one */
-	};
+                LAST_BOOLEAN_CONFIG /* this must be the last one */
+        };
 
 	enum string_config_t {
 		MAP_NAME,
@@ -73,7 +74,7 @@ namespace ConfigManager {
 		LAST_STRING_CONFIG /* this must be the last one */
 	};
 
-	enum integer_config_t {
+        enum integer_config_t {
 		SQL_PORT,
 		MAX_PLAYERS,
 		PZ_LOCKED,
@@ -116,18 +117,35 @@ namespace ConfigManager {
 		STAMINA_REGEN_MINUTE,
 		STAMINA_REGEN_PREMIUM,
 		PATHFINDING_INTERVAL,
-		PATHFINDING_DELAY,
+                PATHFINDING_DELAY,
 
-		LAST_INTEGER_CONFIG /* this must be the last one */
-	};
+                LAST_INTEGER_CONFIG /* this must be the last one */
+        };
+
+        enum float_config_t {
+                MONSTER_BONUS_HEALTH,
+                MONSTER_BONUS_DAMAGE,
+                MONSTER_BONUS_SPEED,
+                MONSTER_BONUS_LOOT,
+
+                LAST_FLOAT_CONFIG /* this must be the last one */
+        };
+
+        struct MonsterLevelRule {
+                int32_t minZ;
+                int32_t maxZ;
+                int32_t levelsPerFloor;
+        };
 
 	bool load();
 	bool reload();
 
-	const std::string& getString(string_config_t what);
-	int32_t getNumber(integer_config_t what);
-	bool getBoolean(boolean_config_t what);
-	float getExperienceStage(uint32_t level);
+        const std::string& getString(string_config_t what);
+        int32_t getNumber(integer_config_t what);
+        bool getBoolean(boolean_config_t what);
+        float getFloat(float_config_t what);
+        float getExperienceStage(uint32_t level);
+        const std::vector<MonsterLevelRule>& getMonsterLevelRules();
 
 	bool setString(string_config_t what, std::string_view value);
 	bool setNumber(integer_config_t what, int32_t value);
