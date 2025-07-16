@@ -24,7 +24,7 @@ enum TargetSearchType_t {
 };
 
 class Monster final : public Creature {
-	public:
+        public:
 		static Monster* createMonster(const std::string& name);
 		static int32_t despawnRange;
 		static int32_t despawnRadius;
@@ -52,8 +52,11 @@ class Monster final : public Creature {
 		void addList() override;
 		void removeList() override;
 
-		const std::string& getName() const override;
-		void setName(const std::string& name);
+                const std::string& getName() const override;
+                void setName(const std::string& name);
+
+                uint32_t getLevel() const;
+                void setLevel(uint32_t lvl);
 
 		const std::string& getNameDescription() const override;
 		void setNameDescription(const std::string& nameDescription) {
@@ -176,8 +179,10 @@ class Monster final : public Creature {
 		CreatureHashSet friendList;
 		CreatureList targetList;
 
-		std::string name;
-		std::string nameDescription;
+                std::string name;
+                std::string nameDescription;
+
+                uint32_t level = 1;
 
 		MonsterType* mType;
 		Spawn* spawn = nullptr;
