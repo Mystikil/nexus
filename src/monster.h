@@ -258,9 +258,13 @@ class Monster final : public Creature {
 		bool isFriend(const Creature* creature) const;
 		bool isOpponent(const Creature* creature) const;
 
-		uint64_t getLostExperience() const override {
-			return skillLoss ? mType->info.experience : 0;
-		}
+                uint64_t getLostExperience() const override {
+                        uint64_t base = mType->info.experience;
+                        if (level > 1) {
+                                base += static_cast<uint64_t>(base * 0.08f * level);
+                        }
+                        return skillLoss ? base : 0;
+                }
 		uint16_t getLookCorpse() const override {
 			return mType->info.lookcorpse;
 		}
