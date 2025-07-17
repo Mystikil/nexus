@@ -25,7 +25,7 @@ event.onDropLoot = function(self, corpse)
                         if bonus > 0 then
                                 chance = math.min(100000, chance + math.floor(chance * bonus / 100))
                         end
-                        local item = corpse:createLootItem({itemid = entry.itemid, countmax = entry.countmax, chance = chance})
+                        local item = corpse:createLootItem({itemId = entry.itemId, maxCount = entry.maxCount, chance = chance})
                         if not item then
                                 print("[Warning] DropLoot: Could not add loot item to corpse.")
                         end
