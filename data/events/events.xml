@@ -42,6 +42,6 @@
 	<event class="Player" method="onSpellCheck" enabled="0" />
 
 	<!-- Monster methods -->
-	<event class="Monster" method="onDropLoot" enabled="1" />
-	<event class="Monster" method="onSpawn" enabled="0" />
+    <event class="Monster" method="onDropLoot" enabled="1" />
+    <event class="Monster" method="onSpawn" enabled="1" />
 </events>
