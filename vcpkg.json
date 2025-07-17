@@ -5,12 +5,13 @@
 	 "boost-asio",
      "boost-iostreams",
 	 "boost-locale",
-     "boost-lockfree",
-     "boost-system",
-     "boost-variant",
-     "fmt",
-	 "openssl",
-     "pugixml"
+        "boost-lockfree",
+        "boost-system",
+        "boost-variant",
+        "boost-numeric-conversion",
+        "fmt",
+        "openssl",
+        "pugixml"
    ],
 
    "features": {
