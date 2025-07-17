@@ -1,0 +1,24 @@
+echo ".vs/
+.vs/
+*.exe
+*.dll
+*.pdb
+*.suo
+*.log
+*.db
+*.sln
+*.vcxproj*
+CMakeFiles/
+CMakeCache.txt
+build/
+*.user
+*.tlog
+*.idb
+*.pch
+*.aps
+*.ncb
+*.opendb
+*.VC.db
+vcpkg_installed/
+.vscode/
+" > .gitignore
