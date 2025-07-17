@@ -299,17 +299,13 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
        std::unique_ptr<Monster> monster_ptr(new Monster(mType));
 
        if (ConfigManager::getBoolean(ConfigManager::MONSTER_LEVEL_SCALING)) {
-               uint32_t level = 1;
-               const auto& rules = ConfigManager::getMonsterLevelRules();
-
-               for (int32_t floor = 1; floor <= pos.getZ(); ++floor) {
-                       for (const auto& rule : rules) {
-                               if (floor >= rule.minZ && floor <= rule.maxZ) {
-                                       level += rule.levelsPerFloor;
-                                       break;
-                               }
-                       }
-               }
+               // monsters gain 10 levels per floor offset from the base floor (z=8)
+               // e.g. a creature on floor 10 will have a level between 21 and 30
+               int baseZ = 8;
+               int floorOffset = std::abs(pos.getZ() - baseZ);
+               int minLevel = (floorOffset * 10) + 1;
+               int maxLevel = minLevel + 9;
+               uint32_t level = static_cast<uint32_t>(uniform_random(minLevel, maxLevel));
 
                monster_ptr->setLevel(level);
 
