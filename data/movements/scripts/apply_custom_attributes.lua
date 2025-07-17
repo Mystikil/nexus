@@ -1,4 +1,4 @@
-function onEquipCustomAttributes(player, item, slot, isCheck)
+function onEquip(player, item, slot, isCheck)
     if isCheck then
         return true
     end
@@ -12,7 +12,7 @@ function onEquipCustomAttributes(player, item, slot, isCheck)
     return true
 end
 
-function onDeEquipCustomAttributes(player, item, slot, isCheck)
+function onDeEquip(player, item, slot, isCheck)
     if isCheck then
         return true
     end
