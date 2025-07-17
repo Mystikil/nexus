@@ -22,3 +22,5 @@ build/
 vcpkg_installed/
 .vscode/
 " > .gitignore
+.vs/
+*.vsidx
