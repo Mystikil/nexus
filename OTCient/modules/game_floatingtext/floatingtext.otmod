@@ -1,0 +1,10 @@
+Module
+  name: game_floatingtext
+  description: Display floating damage and heal numbers
+  author: Codex
+  autoload: true
+  autoload-priority: 1000
+  sandboxed: true
+  scripts: [ floatingtext ]
+  @onLoad: init()
+  @onUnload: terminate()

@@ -1,0 +1,102 @@
+{
+  "flags": [
+    "attackable",
+    "canpushcreatures",
+    "canpushitems",
+    "canwalkonenergy",
+    "canwalkonfire",
+    "canwalkonpoison",
+    "convinceable",
+    "hidehealth",
+    "hostile",
+    "ignorespawnblock",
+    "illusionable",
+    "isboss",
+    "pushable",
+    "runonhealth",
+    "staticattack",
+    "summonable",
+    "targetdistance"
+  ],
+  "attack_attributes": [
+    "areaEffect",
+    "areaeffect",
+    "attack",
+    "chance",
+    "duration",
+    "fire",
+    "interval",
+    "item",
+    "length",
+    "max",
+    "min",
+    "monster",
+    "name",
+    "poison",
+    "radius",
+    "range",
+    "shootEffect",
+    "shooteffect",
+    "skill",
+    "speedchange",
+    "spread",
+    "start",
+    "target"
+  ],
+  "defense_names": [
+    "effect",
+    "healing",
+    "invisible",
+    "outfit",
+    "speed"
+  ],
+  "defense_attributes": [
+    "areaEffect",
+    "areaeffect"
+  ],
+  "element_types": [
+    "deathPercent",
+    "drownPercent",
+    "earthPercent",
+    "energyPercent",
+    "firePercent",
+    "holyPercent",
+    "icePercent",
+    "lifedrainPercent",
+    "physicalPercent"
+  ],
+  "immunities": [
+    "death",
+    "drown",
+    "drunk",
+    "earth",
+    "energy",
+    "fire",
+    "holy",
+    "ice",
+    "invisible",
+    "lifedrain",
+    "manadrain",
+    "outfit",
+    "paralyze",
+    "physical",
+    "poison"
+  ],
+  "voice_attributes": [
+    "sentence",
+    "yell"
+  ],
+  "loot_keys": [
+    "chance",
+    "countmax",
+    "id",
+    "name"
+  ],
+  "summon_keys": [
+    "chance",
+    "interval",
+    "max",
+    "name",
+    "speed"
+  ]
+}

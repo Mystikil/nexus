@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8'?>
+<monster name="Monster Test" nameDescription="You see a test monster" race="blood" experience="1000" speed="25">
+  <health now="10000" max="10000" />
+  <look type="15" head="red" body="blue" legs="orange" feet="brown" corpse="20" />
+  <targetchange interval="5" chance="100" />
+  <flags>
+    <flag summonable="0" />
+    <flag attackable="1" />
+    <flag hostile="1" />
+    <flag illusionable="1" />
+    <flag convinceable="0" />
+    <flag pushable="0" />
+    <flag canpushitems="1" />
+    <flag canpushcreatures="1" />
+    <flag targetdistance="5" />
+    <flag staticattack="90" />
+    <flag runonhealth="0" />
+    <flag canwalkonenergy="0" />
+    <flag canwalkonfire="0" />
+    <flag canwalkonpoison="0" />
+  </flags>
+  <attacks>
+    <attack name="physical" interval="5" chance="100" range="1" radius="5" target="1" min="10" max="100">
+      <attribute key="shootEffect" value="10" />
+    </attack>
+    <attack name="fire" interval="5" chance="15" range="5" radius="5" target="1" min="100" max="200">
+      <attribute key="shootEffect" value="100" />
+    </attack>
+  </attacks>
+  <defenses armor="10" defense="100">
+    <defense name="shield" interval="5" chance="25" min="10" max="50" />
+  </defenses>
+  <elements>
+    <element firePercent="10" />
+  </elements>
+  <immunities>
+    <immunity fire="1" />
+  </immunities>
+  <voices interval="5000" chance="10">
+    <voice sentence="You will die" yell="1" />
+    <voice sentence="You shall turn to ash" />
+  </voices>
+  <loot>
+    <item chance="100" id="2167" countmax="100" />
+  </loot>
+</monster>

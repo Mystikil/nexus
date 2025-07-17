@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<monster name="Test" nameDescription="Test monster" race="blood" experience="10000" speed="10">
+  <health now="10000" max="10000" />
+  <look />
+  <targetchange interval="10" chance="100" />
+  <flags>
+    <flag attackable="0" />
+    <flag canpushcreatures="0" />
+    <flag canpushitems="0" />
+    <flag canwalkonenergy="0" />
+    <flag canwalkonfire="0" />
+    <flag canwalkonpoison="0" />
+    <flag convinceable="0" />
+    <flag hidehealth="0" />
+    <flag hostile="0" />
+    <flag ignorespawnblock="0" />
+    <flag illusionable="0" />
+    <flag isboss="0" />
+    <flag pushable="0" />
+    <flag runonhealth="0" />
+    <flag staticattack="0" />
+    <flag summonable="0" />
+    <flag targetdistance="0" />
+  </flags>
+  <attacks>
+    <attack />
+  </attacks>
+  <defenses armor="10" defense="10">
+    <defense />
+  </defenses>
+  <summons maxSummons="5">
+    <summon name="demon" interval="5" chance="5" max="5" speed="5" />
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="DIE" yell="1" />
+    <voice sentence="DEATH" yell="1" />
+  </voices>
+  <loot>
+    <item chance="100" name="sword" countmax="1" />
+    <item chance="100" name="gold coin" countmax="100" />
+    <item chance="5" name="ruby" countmax="2" />
+  </loot>
+</monster>
