@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Echo Golem" nameDescription="an echo golem" race="undead" experience="180" speed="200" manacost="590">
+    <health now="300" max="300" />
+    <look type="67" corpse="6005" />
+    <targetchange interval="4000" chance="10" />
+
+    <flags>
+        <flag attackable="1" />
+        <flag hostile="1" />
+        <flag summonable="0" />
+        <flag convinceable="0" />
+        <flag pushable="0" />
+        <flag canpushitems="1" />
+        <flag canpushcreatures="1" />
+        <flag targetdistance="1" />
+    </flags>
+
+    <attacks>
+        <attack name="melee" interval="2000" min="0" max="-110" />
+    </attacks>
+
+    <defenses armor="30" defense="30" />
+
+    <script>
+        <event name="EchoGolem" />
+    </script>
+
+    <loot>
+        <item name="gold coin" countmax="50" chance="50000" />
+        <item name="small stone" countmax="4" chance="13000" />
+    </loot>
+</monster>

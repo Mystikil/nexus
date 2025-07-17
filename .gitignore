@@ -4,3 +4,5 @@
 /build/ 
 /vcpkg_installed/ 
 /vc22/.vs/ 
+data/ai_memory/
+!data/ai_memory/.gitkeep
