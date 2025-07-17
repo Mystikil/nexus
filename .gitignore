@@ -24,3 +24,5 @@ vcpkg_installed/
 " > .gitignore
 .vs/
 *.vsidx
+.vs/
+*.vsidx
