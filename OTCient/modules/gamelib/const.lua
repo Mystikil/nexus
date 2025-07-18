@@ -352,7 +352,8 @@ ExtendedIds = {
     Particles = 5,
     MapShader = 6,
     NeedsUpdate = 7,
-    FloatingText = 8
+    FloatingText = 8,
+    Shader = 9
 }
 
 PreviewState = {
