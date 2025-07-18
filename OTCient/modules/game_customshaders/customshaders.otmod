@@ -1,0 +1,10 @@
+Module
+  name: game_customshaders
+  description: Apply shaders received from server
+  author: Codex
+  autoload: true
+  autoload-priority: 1000
+  sandboxed: true
+  scripts: [ customshaders ]
+  @onLoad: init()
+  @onUnload: terminate()
