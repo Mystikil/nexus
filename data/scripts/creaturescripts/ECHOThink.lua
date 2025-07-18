@@ -1,5 +1,11 @@
 local creatureevent = CreatureEvent("ECHOThink")
+local persistence = require("monster.echo.persistence")
 local echo_memory = {}
+
+local function getMemoryKey(monster)
+    local spawn = monster:getSpawnPosition() or monster:getPosition()
+    return string.format("%s:%d,%d,%d", monster:getName():lower(), spawn.x, spawn.y, spawn.z)
+end
 
 -- EXP Phase logic
 local function getPhaseFromEXP(exp)
@@ -29,11 +35,15 @@ function creatureevent.onThink(monster, interval)
     if not monster or not monster:isMonster() then return true end
 
     local id = monster:getId()
-    echo_memory[id] = echo_memory[id] or {
-        lastPhase = -1,
-        evolved = false,
-        lastAction = 0
-    }
+    if not echo_memory[id] then
+        local key = getMemoryKey(monster)
+        local stored = persistence.loadMemory(key) or {}
+        stored.lastPhase = stored.lastPhase or -1
+        stored.evolved = stored.evolved or false
+        stored.lastAction = stored.lastAction or 0
+        stored._key = key
+        echo_memory[id] = stored
+    end
 
     local mem = echo_memory[id]
     local now = os.mtime()
@@ -55,6 +65,7 @@ function creatureevent.onThink(monster, interval)
     -- Don't repeat same phase
     if phase <= mem.lastPhase then return true end
     mem.lastPhase = phase
+    persistence.saveMemory(mem._key, mem)
 
     -- Phased behavior
     if phase == 1 then
@@ -119,6 +130,27 @@ function creatureevent.onThink(monster, interval)
         for _, p in ipairs(players) do safeEffect(p, CONST_ME_WATERSPLASH, cond) end
     end
 
+    return true
+end
+
+function creatureevent.onDeath(monster)
+    local mem = echo_memory[monster:getId()]
+    if mem then
+        persistence.saveMemory(mem._key, nil)
+        echo_memory[monster:getId()] = nil
+    end
+    return true
+end
+
+function creatureevent.onDisappear(monster, creature)
+    if monster:getId() ~= creature:getId() then
+        return true
+    end
+    local mem = echo_memory[monster:getId()]
+    if mem then
+        persistence.saveMemory(mem._key, nil)
+        echo_memory[monster:getId()] = nil
+    end
     return true
 end
 

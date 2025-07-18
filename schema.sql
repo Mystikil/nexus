@@ -381,6 +381,12 @@ CREATE TABLE IF NOT EXISTS `towns` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
+CREATE TABLE IF NOT EXISTS `monster_memory` (
+  `mem_key` varchar(255) NOT NULL,
+  `data` text NOT NULL,
+  PRIMARY KEY (`mem_key`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
 INSERT INTO `server_config` (`config`, `value`) VALUES ('db_version', '32'), ('motd_hash', ''), ('motd_num', '0'), ('players_record', '0');
 
 DROP TRIGGER IF EXISTS `ondelete_players`;
